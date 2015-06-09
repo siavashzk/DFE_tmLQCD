@@ -1,0 +1,59 @@
+package s_lqcd;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVectorType;
+
+public class DFEHalfSpinor extends KernelLib {
+
+	private static final DFEComplexType m_cplxType =
+		new DFEComplexType(dfeFloat(8,24));
+
+	public DFESu3Vector s0, s1;
+
+	private final Kernel owner_kernel;
+
+	protected DFEHalfSpinor(Kernel Owner) {
+		super(Owner);
+		owner_kernel = Owner;
+	}
+
+	static public DFEVectorType<DFEComplex> getDFEHalfSpinorType () {
+		DFEVectorType<DFEComplex> type =
+			new DFEVectorType<DFEComplex>(m_cplxType, 2*3);
+		return type;
+	}
+
+	public DFEHalfSpinor streamoffset(int offset) {
+		DFEHalfSpinor temp = new DFEHalfSpinor(owner_kernel);
+		temp.s0 = new DFESu3Vector(owner_kernel);
+		temp.s1 = new DFESu3Vector(owner_kernel);
+
+		temp.s0.c0 = stream.offset(s0.c0, offset);
+		temp.s0.c1 = stream.offset(s0.c1, offset);
+		temp.s0.c2 = stream.offset(s0.c2, offset);
+		temp.s1.c0 = stream.offset(s1.c0, offset);
+		temp.s1.c1 = stream.offset(s1.c1, offset);
+		temp.s1.c2 = stream.offset(s1.c2, offset);
+
+		return temp;
+	}
+
+	static public DFEHalfSpinor muxselect(Kernel Owner, DFEVar cond, DFEHalfSpinor a, DFEHalfSpinor b) {
+		DFEHalfSpinor temp = new DFEHalfSpinor(Owner);
+		temp.s0 = new DFESu3Vector(Owner);
+		temp.s1 = new DFESu3Vector(Owner);
+
+		temp.s0.c0 = cond ? a.s0.c0 : b.s0.c0;
+		temp.s0.c1 = cond ? a.s0.c1 : b.s0.c1;
+		temp.s0.c2 = cond ? a.s0.c2 : b.s0.c2;
+		temp.s1.c0 = cond ? a.s1.c0 : b.s1.c0;
+		temp.s1.c1 = cond ? a.s1.c1 : b.s1.c1;
+		temp.s1.c2 = cond ? a.s1.c2 : b.s1.c2;
+
+		return temp;
+	}
+}

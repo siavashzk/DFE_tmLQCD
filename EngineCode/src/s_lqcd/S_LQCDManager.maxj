@@ -1,0 +1,171 @@
+package s_lqcd;
+
+import com.maxeler.maxcompiler.v2.managers.BuildConfig;
+import com.maxeler.maxcompiler.v2.managers.custom.CustomManager;
+import com.maxeler.maxcompiler.v2.managers.custom.blocks.KernelBlock;
+import com.maxeler.maxcompiler.v2.managers.custom.stdlib.DebugLevel;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.CPUTypes;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.EngineInterface;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.InterfaceParam;
+
+public class S_LQCDManager extends CustomManager {
+
+	private static String kernel_names[] = new String[] {
+		"times1kernel",
+		"sub1kernel",
+		"times2kernel",
+		"sub2kernel"
+	};
+
+	public S_LQCDManager(S_LQCDEngineParameters engineParameters) {
+		super(engineParameters);
+
+		KernelBlock times1block = addKernel(
+				new S_LQCDKernel(
+						makeKernelParameters(kernel_names[0]),
+						engineParameters.getL()+6,
+						engineParameters.getT()+6,
+						S_LQCDKernel.Mode.TIMES,
+						S_LQCDKernel.EO.ODDEVEN,
+						false
+				)
+		);
+		/*KernelBlock sub1block = addKernel(
+				new S_LQCDKernel(
+						makeKernelParameters(kernel_names[1]),
+						engineParameters.getL()+4,
+						engineParameters.getT()+4,
+						S_LQCDKernel.Mode.SUB,
+						S_LQCDKernel.EO.EVENODD,
+						true
+				)
+		);
+		KernelBlock times2block = addKernel(
+				new S_LQCDKernel(
+						makeKernelParameters(kernel_names[2]),
+						engineParameters.getL()+2,
+						engineParameters.getT()+2,
+						S_LQCDKernel.Mode.TIMES,
+						S_LQCDKernel.EO.ODDEVEN,
+						true
+				)
+		);
+		KernelBlock sub2block = addKernel(
+				new S_LQCDKernel(
+						makeKernelParameters(kernel_names[3]),
+						engineParameters.getL(),
+						engineParameters.getT(),
+						S_LQCDKernel.Mode.SUB,
+						S_LQCDKernel.EO.EVENODD,
+						false
+				)
+		);*/
+
+		for (String inputName: times1block.getAllInputs())
+			times1block.getInput(inputName).connect(addStreamFromCPU(inputName));
+
+		/*DFELink x1 = times1block.getOutput("times1kernel_spinor_out");
+		DFELink x2 = times1block.getOutput("times1kernel_p_spinor_out");
+		DFELink x3 = times1block.getOutput("times1kernel_gauge1_out");
+		DFELink x4 = times1block.getOutput("times1kernel_gauge0_out");
+
+		_CustomManagers.setStreamBufferSpaceRequirement(x1, 1536*2048);
+		_CustomManagers.setStreamBufferSpaceRequirement(x2, 1536*2048);
+		_CustomManagers.setStreamBufferSpaceRequirement(x3, 4608*2048);
+		_CustomManagers.setStreamBufferSpaceRequirement(x4, 4608*2048);
+
+		sub1block.getInput("sub1kernel_spinor_in") <== x1;
+		sub1block.getInput("sub1kernel_p_spinor_in") <== x2;
+		sub1block.getInput("sub1kernel_gauge0") <== x3;
+		sub1block.getInput("sub1kernel_gauge1") <== x4;*/
+
+		/*sub1block.getInput("sub1kernel_spinor_in") <== x1;
+		sub1block.getInput("sub1kernel_p_spinor_in") <== times1block.getOutput("times1kernel_p_spinor_out");
+		sub1block.getInput("sub1kernel_gauge0") <== times1block.getOutput("times1kernel_gauge1_out");
+		sub1block.getInput("sub1kernel_gauge1") <== times1block.getOutput("times1kernel_gauge0_out");*/
+
+		/*times2block.getInput("times2kernel_spinor_in") <== sub1block.getOutput("sub1kernel_spinor_out");
+		times2block.getInput("times2kernel_gauge0") <== sub1block.getOutput("sub1kernel_gauge1_out");
+		times2block.getInput("times2kernel_gauge1") <== sub1block.getOutput("sub1kernel_gauge0_out");
+
+		sub2block.getInput("sub2kernel_spinor_in") <== times2block.getOutput("times2kernel_spinor_out");
+		sub2block.getInput("sub2kernel_p_spinor_in") <== times2block.getOutput("times2kernel_p_spinor_out");
+		sub2block.getInput("sub2kernel_gauge0") <== times2block.getOutput("times2kernel_gauge1_out");
+		sub2block.getInput("sub2kernel_gauge1") <== times2block.getOutput("times2kernel_gauge0_out");
+*/
+		setParameter("quartus_map.ram_usage", "48000");
+
+		for (String outputName: times1block.getAllOutputs())
+			addStreamToCPU(outputName).connect(times1block.getOutput(outputName));
+
+
+		createSLiCinterface( modeDefault(
+		                               engineParameters.getL(),
+		                               engineParameters.getT()
+		                                 ) );
+
+		DebugLevel MyDebugLevel = new DebugLevel();
+		MyDebugLevel.setHasStreamStatus(true);
+		debug.setDebugLevel(MyDebugLevel);
+
+		configBuild(engineParameters );
+	}
+
+	private static int getVolumeWithHalos (int L, int T, int h) {
+		return (T+2*h) * (L+2*h) * (L+2*h) * (L/2+h);
+	}
+
+	private static EngineInterface modeDefault(int L, int T) {
+		EngineInterface engine_interface = new EngineInterface();
+		CPUTypes   type = CPUTypes.FLOAT;
+		int        spinorSize = 4 * 3 * 2 * type.sizeInBytes();
+		int        gaugeSize = 4 * 9 * 2 * type.sizeInBytes();
+
+		InterfaceParam  ka    = engine_interface.addParam("ka", CPUTypes.FLOAT);
+		InterfaceParam  cfactor    = engine_interface.addParam("cfactor", CPUTypes.FLOAT);
+
+		int V  = getVolumeWithHalos(L,T,0);
+		int VH1 = getVolumeWithHalos(L,T,4);
+		int VH2 = getVolumeWithHalos(L,T,3);
+		int VH3 = getVolumeWithHalos(L,T,2);
+		int VH4 = getVolumeWithHalos(L,T,1);
+
+		engine_interface.setTicks("times1kernel", VH1);
+		//engine_interface.setTicks("sub1kernel", VH2);
+		//engine_interface.setTicks("times2kernel", VH3);
+		//engine_interface.setTicks("sub2kernel", VH4);
+
+		for (int i = 0 ; i < 1 ; i++ ) {
+			engine_interface.setScalar(kernel_names[i], "ka0", ka);
+			engine_interface.setScalar(kernel_names[i], "ka1", ka);
+			engine_interface.setScalar(kernel_names[i], "ka2", ka);
+			engine_interface.setScalar(kernel_names[i], "ka3", ka);
+			if (i<2) {
+				engine_interface.setScalar(kernel_names[i], "cfactor", cfactor);
+			} else {
+				engine_interface.setScalar(kernel_names[i], "cfactor", -cfactor);
+			}
+		}
+
+		engine_interface.setStream("times1kernel_spinor_in",   type,  VH1 * spinorSize);
+		engine_interface.setStream("times1kernel_gauge0",   type, VH1 * gaugeSize);
+		engine_interface.setStream("times1kernel_gauge1",   type, VH2  * gaugeSize);
+
+		//engine_interface.setStream("sub1kernel_spinor_out",   type, VH3 * spinorSize);
+		engine_interface.setStream("times1kernel_spinor_out",   type, VH2 * spinorSize);
+
+		return engine_interface;
+	}
+
+	private void configBuild(S_LQCDEngineParameters params) {
+		BuildConfig buildConfig = getBuildConfig();
+		buildConfig.setMPPRCostTableSearchRange(params.getMPPRStartCT(), params.getMPPREndCT());
+		buildConfig.setMPPRParallelism(params.getMPPRThreads());
+		buildConfig.setMPPRRetryNearMissesThreshold(params.getMPPRRetryThreshold());
+	}
+
+	public static void main(String[] args) {
+		S_LQCDManager manager = new S_LQCDManager(new S_LQCDEngineParameters(args));
+		manager.build();
+	}
+}

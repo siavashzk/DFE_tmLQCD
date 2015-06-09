@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maxCompilerManager version="2">
+<enginePart internalEngineSubproject="DFE_tmLQCD_EngineCode" isSrcBin="false" isUseDefaultSelected="false" outputLocation="/DFE_tmLQCD_EngineCode/bin" projectName="DFE_tmLQCD"/>
+<cpuPart internalCpuSubproject="DFE_tmLQCD_CPUCode"/>
+<watchedFiles/>
+</maxCompilerManager>

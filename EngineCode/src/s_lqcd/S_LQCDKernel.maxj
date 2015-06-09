@@ -1,0 +1,347 @@
+package s_lqcd;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.stdlib.core.CounterChain;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
+
+class S_LQCDKernel extends Kernel {
+
+
+	private static final DFEComplexType m_cplxType =
+		new DFEComplexType(dfeFloat(8,24));
+
+	public enum Mode {
+		TIMES, SUB
+	}
+
+	public enum EO {
+		EVENODD, ODDEVEN
+	}
+
+	protected S_LQCDKernel(KernelParameters parameters, int L, int T,
+			Mode mode, EO ieo, boolean passGauge) {
+		super(parameters);
+
+		int LH = L+2;
+		optimization.pushPipeliningFactor(0.5);
+		CounterChain chain = control.count.makeCounterChain();
+		DFEVar t = chain.addCounter(T+2, 1);
+		DFEVar x = chain.addCounter(L+2, 1);
+		DFEVar y = chain.addCounter(L+2, 1);
+		DFEVar z = chain.addCounter(L/2+1, 1);
+
+		DFEVar isOddRow = (t&1).cast(dfeBool()) ^
+		                  (x&1).cast(dfeBool()) ^
+		                  (y&1).cast(dfeBool()) ;
+		if (ieo == EO.EVENODD) isOddRow = isOddRow ^ 1;
+		DFEVar isTOnBoundary = ( t === 0 ) | ( t === L+1) ;
+		DFEVar isXOnBoundary = ( x === 0 ) | ( x === L+1) ;
+		DFEVar isYOnBoundary = ( y === 0 ) | ( y === L+1) ;
+		DFEVar isZOnBoundary = isOddRow ? ( z === L/2 ) : ( z === 0 ) ;
+
+
+		DFEVar isTOnBoundary2 = ( t <= 1 ) | ( t >= L) ;
+		DFEVar isXOnBoundary2 = ( x <= 1 ) | ( x >= L) ;
+		DFEVar isYOnBoundary2 = ( y <= 1 ) | ( y >= L) ;
+		DFEVar isZOnBoundary2 = ( z === 0 ) | ( z === L/2) ;
+
+		DFEVar isTOnBoundary3 = ( t <= 2 ) | ( t >= L-1) ;
+		DFEVar isXOnBoundary3 = ( x <= 2 ) | ( x >= L-1) ;
+		DFEVar isYOnBoundary3 = ( y <= 2 ) | ( y >= L-1) ;
+		DFEVar isZOnBoundary3 = isOddRow ? (z <= 0)|( z >= L/2-1 ) : ( z <= 1 )|(z >= L/2) ;
+
+		/*if (ieo == EO.ODDEVEN) {
+			isZOnBoundary = isOddRow ? ( z === L/2 ) : ( z === 0 ) ;
+		} else if (ieo == EO.EVENODD) {
+			isZOnBoundary = isOddRow ? ( z === 0 ) : ( z === L/2 ) ;
+		}*/
+
+		DFEVar isOnBoundary = isTOnBoundary | isXOnBoundary | isYOnBoundary | isZOnBoundary;
+		DFEVar isOnBoundary2 = isTOnBoundary2 | isXOnBoundary2 | isYOnBoundary2 | isZOnBoundary2;
+		DFEVar isOnBoundary3 = isTOnBoundary3 | isXOnBoundary3 | isYOnBoundary3 | isZOnBoundary3;
+
+		DFEVector<DFEComplex> spinor_in = io.input(parameters.getName()+"_spinor_in", DFESpinor.getDFESpinorType());
+		DFEVector<DFEComplex> gauge0_in = io.input(parameters.getName()+"_gauge0", DFEGauge.getDFEGaugeType());
+		DFEVector<DFEComplex> gauge1_in = io.input(parameters.getName()+"_gauge1", DFEGauge.getDFEGaugeType(), ~isOnBoundary);
+
+		DFEVector<DFEComplex> p_spinor_in = null;
+		if (mode == Mode.SUB ) {
+			p_spinor_in = io.input(parameters.getName()+"_p_spinor_in", DFESpinor.getDFESpinorType(), ~isOnBoundary);
+		}
+
+		DFEVar cfactor_r = io.scalarInput("cfactor", dfeFloat(8,24) );
+		DFEVar ka0_r     = io.scalarInput("ka0", dfeFloat(8,24) );
+		DFEVar ka1_r     = io.scalarInput("ka1", dfeFloat(8,24) );
+		DFEVar ka2_r     = io.scalarInput("ka2", dfeFloat(8,24) );
+		DFEVar ka3_r     = io.scalarInput("ka3", dfeFloat(8,24) );
+
+		DFEComplex cfactor = m_cplxType.newInstance(this);
+		cfactor.setReal(cfactor_r);
+		cfactor.setImaginary(constant.var(dfeFloat(8,24),0));
+		DFEComplex ka0 = m_cplxType.newInstance(this);
+		ka0.setReal(ka0_r);
+		ka0.setImaginary(constant.var(dfeFloat(8,24),0));
+		DFEComplex ka1 = m_cplxType.newInstance(this);
+		ka1.setReal(ka1_r);
+		ka1.setImaginary(constant.var(dfeFloat(8,24),0));
+		DFEComplex ka2 = m_cplxType.newInstance(this);
+		ka2.setReal(ka2_r);
+		ka2.setImaginary(constant.var(dfeFloat(8,24),0));
+		DFEComplex ka3 = m_cplxType.newInstance(this);
+		ka3.setReal(ka3_r);
+		ka3.setImaginary(constant.var(dfeFloat(8,24),0));
+
+		DFESpinor k = new DFESpinor(this, spinor_in);
+		DFEGauge gauge0 = new DFEGauge(this, gauge0_in);
+		DFEGauge gauge1 = new DFEGauge(this, gauge1_in);
+		DFESpinor p = null;
+		if (mode == Mode.SUB ) {
+			p = new DFESpinor(this, p_spinor_in);
+		}
+
+		DFESu3Vector psi, psi2, chi, chi2;
+
+		DFEHalfSpinor[] phi = new DFEHalfSpinor[8];
+		for (int i=0; i<8 ; i++) {
+			phi[i] = new DFEHalfSpinor(this);
+		}
+
+
+		//t_p_pre
+		psi  = k.s0 + k.s2;
+		psi2 = k.s1.add(k.s3);
+		chi  = gauge0.g0.multiply(psi);
+		chi2 = gauge0.g0.multiply(psi2);
+		phi[0].s0 = chi.times_complex(ka0);
+		phi[0].s1 = chi2.times_complex(ka0);
+
+		//debug.simPrintf(
+        //        "dfe pre %f %f\n", k.s0.c0.getReal(), k.s0.c0.getImaginary());
+		//debug.simPrintf(
+        //        "dfe pre %f %f\n", gauge0.g0.c00.getReal(), gauge0.g0.c00.getImaginary());
+		//debug.simPrintf(
+        //        "dfe pre %f %f\n", phi[0].s0.c0.getReal(), phi[0].s0.c0.getImaginary());
+
+		//t_m_pre
+		phi[1].s0 = k.s0.sub(k.s2);
+		phi[1].s1 = k.s1.sub(k.s3);
+
+
+		//x_p_pre
+		psi  = k.s0.add(k.s3.mult_i());
+		psi2 = k.s1.add(k.s2.mult_i());
+		chi  = gauge0.g1.multiply(psi);
+		chi2 = gauge0.g1.multiply(psi2);
+		phi[2].s0 = chi.times_complex(ka1);
+		phi[2].s1 = chi2.times_complex(ka1);
+
+		//x_m_pre
+		phi[3].s0 = k.s0.sub(k.s3.mult_i());
+		phi[3].s1 = k.s1.sub(k.s2.mult_i());
+
+
+		//y_p_pre
+		psi  = k.s0.add(k.s3);
+		psi2 = k.s1.sub(k.s2);
+		chi  = gauge0.g2.multiply(psi);
+		chi2 = gauge0.g2.multiply(psi2);
+		phi[4].s0 = chi.times_complex(ka2);
+		phi[4].s1 = chi2.times_complex(ka2);
+
+		//y_m_pre
+		phi[5].s0 = k.s0.sub(k.s3);
+		phi[5].s1 = k.s1.add(k.s2);
+
+
+		//z_p_pre
+		psi  = k.s0.add(k.s2.mult_i());
+		psi2 = k.s1.sub(k.s3.mult_i());
+		chi  = gauge0.g3.multiply(psi);
+		chi2 = gauge0.g3.multiply(psi2);
+		phi[6].s0 = chi.times_complex(ka3);
+		phi[6].s1 = chi2.times_complex(ka3);
+
+		//z_m_pre
+		phi[7].s0 = k.s0.sub(k.s2.mult_i());
+		phi[7].s1 = k.s1.add(k.s3.mult_i());
+
+		/*for (int i = 0 ; i < 8 ; i++ ) {
+			debug.simPrintf(~isOnBoundary3, "dfe pre %f %f\n", phi[i].s0.c0.getReal(), phi[i].s0.c0.getImaginary());
+		}*/
+		//debug.simPrintf(~isOnBoundary3, "dfe pre %f %f\n", k.s0.c0.getReal(), k.s0.c0.getImaginary());
+
+		DFESpinor rs = new DFESpinor(this);
+		DFEHalfSpinor phiCurr;
+		//debug.simPrintf(~isOnBoundary,
+        //        "dfe post %f %f\n", rs.s0.c0.getReal(), rs.s0.c0.getImaginary());
+
+		//t_p_post
+		phiCurr = phi[0].streamoffset(LH*LH*(L/2+1));
+		rs.s0 = phiCurr.s0.duplicate();
+		rs.s2 = phiCurr.s0.duplicate();
+		rs.s1 = phiCurr.s1.duplicate();
+		rs.s3 = phiCurr.s1.duplicate();
+
+		//debug.simPrintf(~isOnBoundary3,
+        //        "dfe post %f %f\n", rs.s0.c0.getReal(), rs.s0.c0.getImaginary());
+
+
+		//t_m_post
+		phiCurr = phi[1].streamoffset(-LH*LH*(L/2+1));
+		chi  = gauge1.g0.inverse_multiply(phiCurr.s0);
+		chi2 = gauge1.g0.inverse_multiply(phiCurr.s1);
+		psi  = chi.times_complexcjg(ka0);
+		psi2 = chi2.times_complexcjg(ka0);
+		rs.s0.add_assign(psi);
+		rs.s2.sub_assign(psi);
+		rs.s1.add_assign(psi2);
+		rs.s3.sub_assign(psi2);
+
+		//debug.simPrintf(~isOnBoundary3,
+        //        "dfe post %f %f\n", rs.s0.c0.getReal(), rs.s0.c0.getImaginary());
+
+		//x_p_post
+		phiCurr = phi[2].streamoffset(LH*(L/2+1));
+		rs.s0.add_assign(phiCurr.s0);
+		rs.s3.sub_assign(phiCurr.s0.mult_i());
+		rs.s1.add_assign(phiCurr.s1);
+		rs.s2.sub_assign(phiCurr.s1.mult_i());
+
+		//x_m_post
+		phiCurr = phi[3].streamoffset(-LH*LH/2);
+		chi  = gauge1.g1.inverse_multiply(phiCurr.s0);
+		chi2 = gauge1.g1.inverse_multiply(phiCurr.s1);
+		psi  = chi.times_complexcjg(ka1);
+		psi2 = chi2.times_complexcjg(ka1);
+		rs.s0.add_assign(psi);
+		rs.s3.add_assign(psi.mult_i());
+		rs.s1.add_assign(psi2);
+		rs.s2.add_assign(psi2.mult_i());
+
+
+		//y_p_post
+		phiCurr = phi[4].streamoffset(L/2+1);
+		rs.s0.add_assign(phiCurr.s0);
+		rs.s3.add_assign(phiCurr.s0);
+		rs.s1.add_assign(phiCurr.s1);
+		rs.s2.sub_assign(phiCurr.s1);
+
+		//y_m_post
+		phiCurr = phi[5].streamoffset(-(L/2+1));
+		chi  = gauge1.g2.inverse_multiply(phiCurr.s0);
+		chi2 = gauge1.g2.inverse_multiply(phiCurr.s1);
+		psi  = chi.times_complexcjg(ka2);
+		psi2 = chi2.times_complexcjg(ka2);
+		rs.s0.add_assign(psi);
+		rs.s3.sub_assign(psi);
+		rs.s1.add_assign(psi2);
+		rs.s2.add_assign(psi2);
+
+
+		//z_p_post
+		phiCurr = phi[6].streamoffset(1);
+		phiCurr = DFEHalfSpinor.muxselect(this, isOddRow, phiCurr, phi[6]);
+		rs.s0.add_assign(phiCurr.s0);
+		rs.s2.sub_assign(phiCurr.s0.mult_i());
+		rs.s1.add_assign(phiCurr.s1);
+		rs.s3.add_assign(phiCurr.s1.mult_i());
+
+		//z_m_post
+		phiCurr = phi[7].streamoffset(-1);
+		phiCurr = DFEHalfSpinor.muxselect(this, isOddRow, phi[7], phiCurr);
+		chi  = gauge1.g3.inverse_multiply(phiCurr.s0);
+		chi2 = gauge1.g3.inverse_multiply(phiCurr.s1);
+		psi  = chi.times_complexcjg(ka3);
+		psi2 = chi2.times_complexcjg(ka3);
+		rs.s0.add_assign(psi);
+		rs.s1.add_assign(psi2);
+		rs.s2.add_assign(psi.mult_i());
+		rs.s3.sub_assign(psi2.mult_i());
+
+		DFESpinor result = new DFESpinor(this);
+		if (mode == Mode.TIMES) {
+			result.s0 = rs.s0.times_complex(cfactor);
+			result.s1 = rs.s1.times_complex(cfactor);
+			result.s2 = rs.s2.times_complexcjg(cfactor);
+			result.s3 = rs.s3.times_complexcjg(cfactor);
+		} else if (mode == Mode.SUB) {
+			psi = p.s0.times_complex(cfactor);
+			result.s0 = psi.sub(rs.s0);
+			psi2 = p.s1.times_complex(cfactor);
+			result.s1 = psi2.sub(rs.s1);
+			psi = p.s2.times_complexcjg(cfactor);
+			result.s2 = rs.s2.sub(psi);
+			psi2 = p.s3.times_complexcjg(cfactor);
+			result.s3 = rs.s3.sub(psi2);
+		}
+		DFEVector<DFEComplex> spinor_out = result.convertToDFEVector();
+
+
+		//debug.simPrintf(~isOnBoundary,
+        //        "dfe post %f %f\n", result.s0.c0.getReal(), result.s0.c0.getImaginary());
+
+		io.output(parameters.getName()+"_spinor_out", spinor_out, DFESpinor.getDFESpinorType(), ~isOnBoundary);
+
+		if (passGauge == true) {
+			io.output(parameters.getName()+"_gauge0_out", gauge0_in, DFEGauge.getDFEGaugeType(), ~isOnBoundary2);
+			io.output(parameters.getName()+"_gauge1_out", gauge1_in, DFEGauge.getDFEGaugeType(), ~isOnBoundary);
+			if (mode == Mode.TIMES) {
+				io.output(parameters.getName()+"_p_spinor_out", spinor_in, DFESpinor.getDFESpinorType(), ~isOnBoundary2);
+			}
+		}
+
+	}
+
+	/*public static DFEStructType getSu3VectorType() {
+		List<StructFieldType> fields = new ArrayList<StructFieldType>();
+
+		for (int i = 0 ; i < 3 ; i++) {
+			fields.add(sft("c" + i, m_cplxType));
+		}
+
+		DFEStructType type = new DFEStructType(fields.toArray(new StructFieldType[1]));
+
+		return type;
+	}
+
+	public static DFEStructType getSpinorType() {
+		List<StructFieldType> fields = new ArrayList<StructFieldType>();
+
+		for (int i = 0 ; i < 4 ; i++) {
+			fields.add(sft("s" + i, su3Type));
+		}
+
+		DFEStructType type = new DFEStructType(fields.toArray(new StructFieldType[1]));
+
+		return type;
+	}
+
+	public static DFEStructType getSu3Type() {
+		List<StructFieldType> fields = new ArrayList<StructFieldType>();
+
+		for (int i = 0 ; i < 3 ; i++) {
+			for (int j = 0 ; j < 3 ; j++) {
+				fields.add( sft("c"+i+j , m_cplxType) );
+			}
+		}
+
+		DFEStructType type = new DFEStructType(fields.toArray(new StructFieldType[1]));
+
+		return type;
+	}
+
+	public DFEStruct vector_add(DFEStruct a, DFEStruct b) {
+		DFEStruct output = getSu3VectorType().newInstance(this);
+
+		for (int i = 0 ; i < 3 ; i++ ) {
+			output["c" + i] <== (DFEComplex)a["c" + i] * (DFEComplex)b["c" + i];
+		}
+
+		return output;
+	}*/
+
+}

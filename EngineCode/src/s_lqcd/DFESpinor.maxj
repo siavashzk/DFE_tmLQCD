@@ -1,0 +1,78 @@
+package s_lqcd;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVectorType;
+
+public class DFESpinor extends KernelLib {
+
+	private static final DFEComplexType m_cplxType =
+		new DFEComplexType(dfeFloat(8,24));
+
+	public DFESu3Vector s0, s1, s2, s3;
+
+	private final Kernel owner_kernel;
+
+	protected DFESpinor(Kernel Owner) {
+		super(Owner);
+		owner_kernel = Owner;
+		s0 = new DFESu3Vector (Owner);
+		s1 = new DFESu3Vector (Owner);
+		s2 = new DFESu3Vector (Owner);
+		s3 = new DFESu3Vector (Owner);
+	}
+
+	protected DFESpinor(Kernel Owner, DFEVector<DFEComplex> in) {
+		super(Owner);
+		owner_kernel = Owner;
+		s0 = new DFESu3Vector (Owner);
+		s1 = new DFESu3Vector (Owner);
+		s2 = new DFESu3Vector (Owner);
+		s3 = new DFESu3Vector (Owner);
+
+		s0.c0 = in[0];
+		s0.c1 = in[1];
+		s0.c2 = in[2];
+
+		s1.c0 = in[3];
+		s1.c1 = in[4];
+		s1.c2 = in[5];
+
+		s2.c0 = in[6];
+		s2.c1 = in[7];
+		s2.c2 = in[8];
+
+		s3.c0 = in[9];
+		s3.c1 = in[10];
+		s3.c2 = in[11];
+
+	}
+
+	static public DFEVectorType<DFEComplex> getDFESpinorType () {
+		DFEVectorType<DFEComplex> type =
+			new DFEVectorType<DFEComplex>(m_cplxType, 4*3);
+		return type;
+	}
+
+	public DFEVector<DFEComplex> convertToDFEVector () {
+		DFEVector<DFEComplex> result = getDFESpinorType().newInstance(owner_kernel);
+
+		result[0]  <== s0.c0;
+		result[1]  <== s0.c1;
+		result[2]  <== s0.c2;
+		result[3]  <== s1.c0;
+		result[4]  <== s1.c1;
+		result[5]  <== s1.c2;
+		result[6]  <== s2.c0;
+		result[7]  <== s2.c1;
+		result[8]  <== s2.c2;
+		result[9]  <== s3.c0;
+		result[10] <== s3.c1;
+		result[11] <== s3.c2;
+
+		return result;
+	}
+}

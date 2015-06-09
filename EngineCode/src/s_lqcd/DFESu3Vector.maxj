@@ -1,0 +1,101 @@
+package s_lqcd;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
+
+public class DFESu3Vector extends KernelLib {
+
+	public DFEComplex c0, c1, c2;
+
+	private final Kernel owner_kernel;
+	protected DFESu3Vector(Kernel Owner) {
+		super(Owner);
+		owner_kernel = Owner;
+		DFEComplexType cplxType = new DFEComplexType(dfeFloat(8,24));
+		c0 = cplxType.newInstance(Owner);
+		c1 = cplxType.newInstance(Owner);
+		c2 = cplxType.newInstance(Owner);
+	}
+
+	protected DFESu3Vector(Kernel Owner, DFEVector<DFEComplex> su3vec) {
+		super(Owner);
+		owner_kernel = Owner;
+		DFEComplexType cplxType = new DFEComplexType(dfeFloat(8,24));
+		c0 <== cplxType.newInstance(Owner);
+		c1 <== cplxType.newInstance(Owner);
+		c2 <== cplxType.newInstance(Owner);
+
+		c0 = su3vec[0];
+		c1 = su3vec[1];
+		c2 = su3vec[2];
+	}
+
+	DFESu3Vector add (DFESu3Vector a) {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+		temp.c0 = c0 + a.c0;
+		temp.c1 = c1 + a.c1;
+		temp.c2 = c2 + a.c2;
+		return temp;
+	}
+
+	DFESu3Vector sub (DFESu3Vector a) {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+		temp.c0 = c0 - a.c0;
+		temp.c1 = c1 - a.c1;
+		temp.c2 = c2 - a.c2;
+		return temp;
+	}
+
+	DFESu3Vector times_complex (DFEComplex a) {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+		temp.c0 = a * c0;
+		temp.c1 = a * c1;
+		temp.c2 = a * c2;
+		return temp;
+	}
+
+	DFESu3Vector times_complexcjg (DFEComplex a) {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+		temp.c0 = a.conjugate() * c0;
+		temp.c1 = a.conjugate() * c1;
+		temp.c2 = a.conjugate() * c2;
+		return temp;
+	}
+
+	DFESu3Vector mult_i () {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+		temp.c0.setReal(-c0.getImaginary());
+		temp.c0.setImaginary(c0.getReal());
+		temp.c1.setReal(-c1.getImaginary());
+		temp.c1.setImaginary(c1.getReal());
+		temp.c2.setReal(-c2.getImaginary());
+		temp.c2.setImaginary(c2.getReal());
+		return temp;
+	}
+
+	DFESu3Vector duplicate () {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+		temp.c0 = c0;
+		temp.c1 = c1;
+		temp.c2 = c2;
+		return temp;
+	}
+
+	void add_assign (DFESu3Vector a) {
+		c0 += a.c0;
+		c1 += a.c1;
+		c2 += a.c2;
+	}
+
+	void sub_assign (DFESu3Vector a) {
+		c0 -= a.c0;
+		c1 -= a.c1;
+		c2 -= a.c2;
+	}
+
+
+
+}
