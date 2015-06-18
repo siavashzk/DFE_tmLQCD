@@ -23,8 +23,8 @@ public class S_LQCDManager extends CustomManager {
 		KernelBlock times1block = addKernel(
 				new S_LQCDKernel(
 						makeKernelParameters(kernel_names[0]),
-						engineParameters.getL()+6,
-						engineParameters.getT()+6,
+						engineParameters.getL(),
+						engineParameters.getT(),
 						S_LQCDKernel.Mode.TIMES,
 						S_LQCDKernel.EO.ODDEVEN,
 						false
@@ -130,7 +130,7 @@ public class S_LQCDManager extends CustomManager {
 		int VH3 = getVolumeWithHalos(L,T,2);
 		int VH4 = getVolumeWithHalos(L,T,1);
 
-		engine_interface.setTicks("times1kernel", VH1);
+		engine_interface.setTicks("times1kernel", VH4);
 		//engine_interface.setTicks("sub1kernel", VH2);
 		//engine_interface.setTicks("times2kernel", VH3);
 		//engine_interface.setTicks("sub2kernel", VH4);
@@ -147,12 +147,12 @@ public class S_LQCDManager extends CustomManager {
 			}
 		}
 
-		engine_interface.setStream("times1kernel_spinor_in",   type,  VH1 * spinorSize);
-		engine_interface.setStream("times1kernel_gauge0",   type, VH1 * gaugeSize);
-		engine_interface.setStream("times1kernel_gauge1",   type, VH2  * gaugeSize);
+		engine_interface.setStream("times1kernel_spinor_in",   type,  VH4 * spinorSize);
+		engine_interface.setStream("times1kernel_gauge0",   type, VH4 * gaugeSize);
+		engine_interface.setStream("times1kernel_gauge1",   type, VH4  * gaugeSize);
 
 		//engine_interface.setStream("sub1kernel_spinor_out",   type, VH3 * spinorSize);
-		engine_interface.setStream("times1kernel_spinor_out",   type, VH2 * spinorSize);
+		engine_interface.setStream("times1kernel_spinor_out",   type, V * spinorSize);
 
 		return engine_interface;
 	}

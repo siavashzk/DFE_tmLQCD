@@ -66,7 +66,7 @@ class S_LQCDKernel extends Kernel {
 
 		DFEVector<DFEComplex> spinor_in = io.input(parameters.getName()+"_spinor_in", DFESpinor.getDFESpinorType());
 		DFEVector<DFEComplex> gauge0_in = io.input(parameters.getName()+"_gauge0", DFEGauge.getDFEGaugeType());
-		DFEVector<DFEComplex> gauge1_in = io.input(parameters.getName()+"_gauge1", DFEGauge.getDFEGaugeType(), ~isOnBoundary);
+		DFEVector<DFEComplex> gauge1_in = io.input(parameters.getName()+"_gauge1", DFEGauge.getDFEGaugeType());
 
 		DFEVector<DFEComplex> p_spinor_in = null;
 		if (mode == Mode.SUB ) {
@@ -127,8 +127,12 @@ class S_LQCDKernel extends Kernel {
         //        "dfe pre %f %f\n", phi[0].s0.c0.getReal(), phi[0].s0.c0.getImaginary());
 
 		//t_m_pre
-		phi[1].s0 = k.s0.sub(k.s2);
-		phi[1].s1 = k.s1.sub(k.s3);
+		psi = k.s0.sub(k.s2);
+		psi2 = k.s1.sub(k.s3);
+		chi  = gauge1.g0.inverse_multiply(psi);
+		chi2 = gauge1.g0.inverse_multiply(psi2);
+		phi[1].s0  = chi.times_complexcjg(ka0);
+		phi[1].s1 = chi2.times_complexcjg(ka0);
 
 
 		//x_p_pre
@@ -140,8 +144,12 @@ class S_LQCDKernel extends Kernel {
 		phi[2].s1 = chi2.times_complex(ka1);
 
 		//x_m_pre
-		phi[3].s0 = k.s0.sub(k.s3.mult_i());
-		phi[3].s1 = k.s1.sub(k.s2.mult_i());
+		psi = k.s0.sub(k.s3.mult_i());
+		psi2 = k.s1.sub(k.s2.mult_i());
+		chi  = gauge1.g1.inverse_multiply(psi);
+		chi2 = gauge1.g1.inverse_multiply(psi2);
+		phi[3].s0  = chi.times_complexcjg(ka1);
+		phi[3].s1 = chi2.times_complexcjg(ka1);
 
 
 		//y_p_pre
@@ -153,8 +161,12 @@ class S_LQCDKernel extends Kernel {
 		phi[4].s1 = chi2.times_complex(ka2);
 
 		//y_m_pre
-		phi[5].s0 = k.s0.sub(k.s3);
-		phi[5].s1 = k.s1.add(k.s2);
+		psi = k.s0.sub(k.s3);
+		psi2 = k.s1.add(k.s2);
+		chi  = gauge1.g2.inverse_multiply(psi);
+		chi2 = gauge1.g2.inverse_multiply(psi2);
+		phi[5].s0  = chi.times_complexcjg(ka2);
+		phi[5].s1 = chi2.times_complexcjg(ka2);
 
 
 		//z_p_pre
@@ -166,8 +178,12 @@ class S_LQCDKernel extends Kernel {
 		phi[6].s1 = chi2.times_complex(ka3);
 
 		//z_m_pre
-		phi[7].s0 = k.s0.sub(k.s2.mult_i());
-		phi[7].s1 = k.s1.add(k.s3.mult_i());
+		psi = k.s0.sub(k.s2.mult_i());
+		psi2 = k.s1.add(k.s3.mult_i());
+		chi  = gauge1.g3.inverse_multiply(psi);
+		chi2 = gauge1.g3.inverse_multiply(psi2);
+		phi[7].s0 = chi.times_complexcjg(ka3);
+		phi[7].s1 = chi2.times_complexcjg(ka3);
 
 		/*for (int i = 0 ; i < 8 ; i++ ) {
 			debug.simPrintf(~isOnBoundary3, "dfe pre %f %f\n", phi[i].s0.c0.getReal(), phi[i].s0.c0.getImaginary());
@@ -176,8 +192,6 @@ class S_LQCDKernel extends Kernel {
 
 		DFESpinor rs = new DFESpinor(this);
 		DFEHalfSpinor phiCurr;
-		//debug.simPrintf(~isOnBoundary,
-        //        "dfe post %f %f\n", rs.s0.c0.getReal(), rs.s0.c0.getImaginary());
 
 		//t_p_post
 		phiCurr = phi[0].streamoffset(LH*LH*(L/2+1));
@@ -186,23 +200,16 @@ class S_LQCDKernel extends Kernel {
 		rs.s1 = phiCurr.s1.duplicate();
 		rs.s3 = phiCurr.s1.duplicate();
 
-		//debug.simPrintf(~isOnBoundary3,
-        //        "dfe post %f %f\n", rs.s0.c0.getReal(), rs.s0.c0.getImaginary());
+		//debug.simPrintf(~isOnBoundary,
+        //        "dfe post %f %f\n", phiCurr.s0.c0.getReal(), phiCurr.s0.c0.getImaginary());
 
 
 		//t_m_post
 		phiCurr = phi[1].streamoffset(-LH*LH*(L/2+1));
-		chi  = gauge1.g0.inverse_multiply(phiCurr.s0);
-		chi2 = gauge1.g0.inverse_multiply(phiCurr.s1);
-		psi  = chi.times_complexcjg(ka0);
-		psi2 = chi2.times_complexcjg(ka0);
-		rs.s0.add_assign(psi);
-		rs.s2.sub_assign(psi);
-		rs.s1.add_assign(psi2);
-		rs.s3.sub_assign(psi2);
-
-		//debug.simPrintf(~isOnBoundary3,
-        //        "dfe post %f %f\n", rs.s0.c0.getReal(), rs.s0.c0.getImaginary());
+		rs.s0.add_assign(phiCurr.s0);
+		rs.s2.sub_assign(phiCurr.s0);
+		rs.s1.add_assign(phiCurr.s1);
+		rs.s3.sub_assign(phiCurr.s1);
 
 		//x_p_post
 		phiCurr = phi[2].streamoffset(LH*(L/2+1));
@@ -213,14 +220,10 @@ class S_LQCDKernel extends Kernel {
 
 		//x_m_post
 		phiCurr = phi[3].streamoffset(-LH*LH/2);
-		chi  = gauge1.g1.inverse_multiply(phiCurr.s0);
-		chi2 = gauge1.g1.inverse_multiply(phiCurr.s1);
-		psi  = chi.times_complexcjg(ka1);
-		psi2 = chi2.times_complexcjg(ka1);
-		rs.s0.add_assign(psi);
-		rs.s3.add_assign(psi.mult_i());
-		rs.s1.add_assign(psi2);
-		rs.s2.add_assign(psi2.mult_i());
+		rs.s0.add_assign(phiCurr.s0);
+		rs.s3.add_assign(phiCurr.s0.mult_i());
+		rs.s1.add_assign(phiCurr.s1);
+		rs.s2.add_assign(phiCurr.s1.mult_i());
 
 
 		//y_p_post
@@ -230,16 +233,14 @@ class S_LQCDKernel extends Kernel {
 		rs.s1.add_assign(phiCurr.s1);
 		rs.s2.sub_assign(phiCurr.s1);
 
+
 		//y_m_post
 		phiCurr = phi[5].streamoffset(-(L/2+1));
-		chi  = gauge1.g2.inverse_multiply(phiCurr.s0);
-		chi2 = gauge1.g2.inverse_multiply(phiCurr.s1);
-		psi  = chi.times_complexcjg(ka2);
-		psi2 = chi2.times_complexcjg(ka2);
-		rs.s0.add_assign(psi);
-		rs.s3.sub_assign(psi);
-		rs.s1.add_assign(psi2);
-		rs.s2.add_assign(psi2);
+		rs.s0.add_assign(phiCurr.s0);
+		rs.s3.sub_assign(phiCurr.s0);
+		rs.s1.add_assign(phiCurr.s1);
+		rs.s2.add_assign(phiCurr.s1);
+
 
 
 		//z_p_post
@@ -253,14 +254,11 @@ class S_LQCDKernel extends Kernel {
 		//z_m_post
 		phiCurr = phi[7].streamoffset(-1);
 		phiCurr = DFEHalfSpinor.muxselect(this, isOddRow, phi[7], phiCurr);
-		chi  = gauge1.g3.inverse_multiply(phiCurr.s0);
-		chi2 = gauge1.g3.inverse_multiply(phiCurr.s1);
-		psi  = chi.times_complexcjg(ka3);
-		psi2 = chi2.times_complexcjg(ka3);
-		rs.s0.add_assign(psi);
-		rs.s1.add_assign(psi2);
-		rs.s2.add_assign(psi.mult_i());
-		rs.s3.sub_assign(psi2.mult_i());
+		rs.s0.add_assign(phiCurr.s0);
+		rs.s2.add_assign(phiCurr.s0.mult_i());
+		rs.s1.add_assign(phiCurr.s1);
+		rs.s3.sub_assign(phiCurr.s1.mult_i());
+
 
 		DFESpinor result = new DFESpinor(this);
 		if (mode == Mode.TIMES) {

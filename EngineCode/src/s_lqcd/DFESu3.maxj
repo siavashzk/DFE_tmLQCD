@@ -54,6 +54,20 @@ public class DFESu3 extends KernelLib  {
 		c22 = su3[8];
 	}
 
+	public DFESu3 conjugate () {
+		DFESu3 temp = new DFESu3(owner_kernel);
+		temp.c00 = c00.conjugate();
+		temp.c01 = c01.conjugate();
+		temp.c02 = c02.conjugate();
+		temp.c10 = c10.conjugate();
+		temp.c11 = c11.conjugate();
+		temp.c12 = c12.conjugate();
+		temp.c20 = c20.conjugate();
+		temp.c21 = c21.conjugate();
+		temp.c22 = c22.conjugate();
+		return temp;
+	}
+
 	public DFESu3Vector multiply (DFESu3Vector a) {
 		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
 		temp.c0 = c00 * a.c0 + c01 *a.c1 + c02 * a.c2;

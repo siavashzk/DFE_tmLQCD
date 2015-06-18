@@ -1,14 +1,79 @@
-Tue 15:42: ########################################## 
-Tue 15:42: Compiling.
-Tue 15:42: ########################################## 
+Tue 16:13: ########################################## 
+Tue 16:13: Compiling.
+Tue 16:13: ########################################## 
 
-Tue 15:42: MaxCompiler version: 2014.2.
-Tue 15:42: Build DFE run rule for DFE_tmLQCD start time: Tue Jun 09 15:42:30 BST 2015.
-Tue 15:42: Project location: /home/skamali/workspace3/DFE_tmLQCD.
-Tue 15:42: Detailed build log: /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/build.log.
+Tue 16:13: MaxCompiler version: 2014.2.
+Tue 16:13: Build DFE run rule for DFE_tmLQCD start time: Tue Jun 09 16:13:23 BST 2015.
+Tue 16:13: Project location: /home/skamali/workspace3/DFE_tmLQCD.
+Tue 16:13: Detailed build log: /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/build.log.
 
-Tue 15:42: Compiling Engine Code.
-Tue 15:42: null
-Tue 15:42: Build failed: Tue Jun 09 15:42:36 BST 2015
+Tue 16:13: Compiling Engine Code.
+Tue 16:13: Building S_LQCD.max file. 
+Tue 16:13: Setting environment variable:
+Tue 16:13: MAXCOMPILER_BUILD_DIR : /network-scratch/skamali/maxdc_builds/
+Tue 16:13: MAX_BUILDPARAMS : DFEModel='MAIA' target='DFE' maxFileName='S_LQCD'  
+Tue 16:13: Building output:
+Tue 16:13: MaxCompiler version: 2014.2
+Tue 16:13: Build "S_LQCD" start time: Tue Jun 09 16:13:26 BST 2015
+Tue 16:13: Main build process running as user skamali on host nxws27.office.maxeler.com
+Tue 16:13: Build location: /scratch/skamali/maxdc_builds/09-06-15/S_LQCD_DFE_L4_T4
+Tue 16:13: Detailed build log available in "_build.log"
+Tue 16:13: 
+Tue 16:13: ENGINE BUILD PARAMETERS
+Tue 16:13: 	 Build name: S_LQCD_DFE_L4_T4
+Tue 16:13: 	   DFEModel: MAIA            
+Tue 16:13: 	maxFileName: S_LQCD          
+Tue 16:13: 	     target: DFE             
+Tue 16:13: 	 enableMPCX: false           
+Tue 16:13: 	          L: 4               
+Tue 16:13: 	          T: 4               
+Tue 16:13: 	     VOLUME: 256             
+Tue 16:13: Instantiating kernel "times1kernel"
+Tue 16:13: 
+Tue 16:13: Compiling kernel "times1kernel"
+Tue 16:13: WARNING: Warning (UNCONNECTED_DESIGN_ELEMENT):
+Tue 16:13: WARNING: Unconnected elements in design 'times1kernel'
+Tue 16:13: WARNING: details in : /scratch/skamali/maxdc_builds/09-06-15/S_LQCD_DFE_L4_T4/scratch/times1kernel_graph_warnings.txt
+Tue 16:14: Generating input files (VHDL, netlists, MegaWizard/CoreGen)
+Tue 16:14: Running back-end  build (16 phases)
+Tue 16:14: (1/16) - Prepare MaxFile Data (GenerateMaxFileDataFile)
+Tue 16:14: (2/16) - Prepare for Placement (QuartusMap)
+Tue 17:55: (3/16) - Generate Incremental Netlist (QuartusCdb)
+Tue 18:02: (4/16) - Generate Resource Report (AlteraResourceUsageBuildPass)
+Tue 18:02: (5/16) - Generate Annotated Source Code (AlteraResourceAnnotationBuildPass)
+Tue 18:04: (6/16) - Analyse Resource Usage (AlteraResourceCounterPass)
+Tue 18:04: 
+Tue 18:04: About to start chip vendor Map/Place/Route toolflow. This will take some time.
+Tue 18:04: For this compile, we estimate this process may take longer than 1 hour.
+Tue 18:04: We recommend running in simulation to verify correctness before building hardware.
+Tue 18:04: 
+Tue 18:04: PRELIMINARY RESOURCE USAGE
+Tue 18:04: Logic utilization:     446829 / 262400   (170.29%)
+Tue 18:04: Multipliers (18x18):     1392 / 3926     (35.46%)
+Tue 18:04: Block memory (bits):  6946305 / 52572160 (13.21%)
+Tue 18:04: 
+Tue 18:04: 
+Tue 18:04: (7/16) - Place and Route DFE (AlteraMPPR)
+Tue 18:04: Executing MPPR with 1 cost table and 1 thread.
+Tue 18:04: MPPR: Starting 1 cost table
+Tue 18:04: WARNING: Logic utilization may be optimized significantly and final utilization can be below 100%.
+Tue 20:38: ERROR: MPPR: Failed run: Error running external tool :-
+Tue 20:38: ERROR: Problem            : [Cost table 1] external process failed: Command failed with exit code: 3. Log file: /network-infrastructure/maxq/maxq_skamali_2015_jun_09_18.05.49_log_stderr_stdout_21311.log
+Tue 20:38: ERROR: Program log        : /network-infrastructure/maxq/maxq_skamali_2015_jun_09_18.05.49_log_stderr_stdout_21311.log
+Tue 20:38: ERROR: Command run        : export LM_LICENSE_FILE="$LM_LICENSE_FILE:$MAXCOMPILERDIR/lib/MaxCompilerQuartusLicense.dat" ; source /network-raid/opt/quartus-13.1/quartus_path.sh; ulimit -v 33792000;quartus_fit MAX4MAIAPeripheryTop --64bit --write_settings_files=off --parallel=3 --set PLACEMENT_EFFORT_MULTIPLIER=4 --seed=1
+Tue 20:38: ERROR: Directory run in   : /scratch/skamali/maxdc_builds/09-06-15/S_LQCD_DFE_L4_T4/scratch/altera_quartus/ct1/./altera_quartus
+Tue 20:38: ERROR: Exit code          : 3
+Tue 20:38: ERROR: Detailed build log : /scratch/skamali/maxdc_builds/09-06-15/S_LQCD_DFE_L4_T4/scratch/altera_quartus/ct1/_build.log
+Tue 20:38: ERROR: Error running external tool :-
+Tue 20:38: ERROR: Problem            : Error in MPPR: [Cost table 1] external process failed: Command failed with exit code: 3. Log file: /network-infrastructure/maxq/maxq_skamali_2015_jun_09_18.05.49_log_stderr_stdout_21311.log
+Tue 20:38: ERROR: Program log        : /network-infrastructure/maxq/maxq_skamali_2015_jun_09_18.05.49_log_stderr_stdout_21311.log
+Tue 20:38: ERROR: Command run        : export LM_LICENSE_FILE="$LM_LICENSE_FILE:$MAXCOMPILERDIR/lib/MaxCompilerQuartusLicense.dat" ; source /network-raid/opt/quartus-13.1/quartus_path.sh; ulimit -v 33792000;quartus_fit MAX4MAIAPeripheryTop --64bit --write_settings_files=off --parallel=3 --set PLACEMENT_EFFORT_MULTIPLIER=4 --seed=1
+Tue 20:38: ERROR: Directory run in   : /scratch/skamali/maxdc_builds/09-06-15/S_LQCD_DFE_L4_T4/scratch/altera_quartus/ct1/./altera_quartus
+Tue 20:38: ERROR: Exit code          : 3
+Tue 20:38: ERROR: Detailed build log : /scratch/skamali/maxdc_builds/09-06-15/S_LQCD_DFE_L4_T4/scratch/altera_quartus/ct1/_build.log
+Tue 20:38: Building: S_LQCD.max file finished.
+Tue 20:38: Build process failed while trying to create S_LQCD.max file
+Tue 20:38: null
+Tue 20:38: Build failed: Tue Jun 09 20:38:49 BST 2015
 
 
