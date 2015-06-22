@@ -62,7 +62,7 @@ include/S_LQCD.h: maxfiles/S_LQCD.h
 maxfiles/S_LQCD.max maxfiles/S_LQCD.h:
 # Ensure that maxfiles do not get build by this Makefile when running in MaxIDE
 ifndef MAXIDE_RUN
-	test -f $@ || env  MAX_BUILDPARAMS=" DFEModel=MAIA  target=DFE  maxFileName=S_LQCD "  ant -v -f S_LQCD.xml
+	test -f $@ || env  MAX_BUILDPARAMS=" DFEModel=MAIA  target=DFE  maxFileName=S_LQCD MPPREndCT='8' MPPRThreads='4' "  ant -v -f S_LQCD.xml
 else
 	test -f $@ || ( echo 'Maxfile unavailable: $@' >/dev/stderr ; exit 1 )
 endif

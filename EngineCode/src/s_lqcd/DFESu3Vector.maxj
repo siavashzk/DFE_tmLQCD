@@ -2,6 +2,7 @@ package s_lqcd;
 
 import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
 import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
+import com.maxeler.maxcompiler.v2.kernelcompiler.stdlib.core.Stream.OffsetExpr;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
@@ -84,6 +85,14 @@ public class DFESu3Vector extends KernelLib {
 		return temp;
 	}
 
+	DFESu3Vector neg () {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+		temp.c0 = -c0;
+		temp.c1 = -c1;
+		temp.c2 = -c2;
+		return temp;
+	}
+
 	void add_assign (DFESu3Vector a) {
 		c0 += a.c0;
 		c1 += a.c1;
@@ -96,6 +105,15 @@ public class DFESu3Vector extends KernelLib {
 		c2 -= a.c2;
 	}
 
+	public DFESu3Vector streamoffset(OffsetExpr offset) {
+		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
+
+		temp.c0 = stream.offset(c0, offset);
+		temp.c1 = stream.offset(c1, offset);
+		temp.c2 = stream.offset(c2, offset);
+
+		return temp;
+	}
 
 
 }

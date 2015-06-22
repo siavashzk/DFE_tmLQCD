@@ -25,6 +25,7 @@ public class S_LQCDManager extends CustomManager {
 						makeKernelParameters(kernel_names[0]),
 						engineParameters.getL(),
 						engineParameters.getT(),
+						engineParameters.getNumPipes(),
 						S_LQCDKernel.Mode.TIMES,
 						S_LQCDKernel.EO.ODDEVEN,
 						false
@@ -94,6 +95,7 @@ public class S_LQCDManager extends CustomManager {
 		sub2block.getInput("sub2kernel_gauge1") <== times2block.getOutput("times2kernel_gauge0_out");
 */
 		setParameter("quartus_map.ram_usage", "48000");
+		config.setAllowNonMultipleTransitions(true);
 
 		for (String outputName: times1block.getAllOutputs())
 			addStreamToCPU(outputName).connect(times1block.getOutput(outputName));
@@ -130,7 +132,7 @@ public class S_LQCDManager extends CustomManager {
 		int VH3 = getVolumeWithHalos(L,T,2);
 		int VH4 = getVolumeWithHalos(L,T,1);
 
-		engine_interface.setTicks("times1kernel", VH4);
+		engine_interface.setTicks("times1kernel", 8 * VH4);
 		//engine_interface.setTicks("sub1kernel", VH2);
 		//engine_interface.setTicks("times2kernel", VH3);
 		//engine_interface.setTicks("sub2kernel", VH4);

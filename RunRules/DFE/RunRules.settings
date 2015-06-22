@@ -4,6 +4,8 @@
 <boardModel type="MAIA"/>
 <simulation enabled="false"/>
 <enableMPCX enabled="false"/>
+<programArgument argument="MPPREndCT" value="8"/>
+<programArgument argument="MPPRThreads" value="4"/>
 </common>
 <maxFiles>
 <maxFile buildName="S_LQCD" buildOrUseExisting="build">

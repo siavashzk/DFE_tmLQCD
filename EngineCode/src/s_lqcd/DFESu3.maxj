@@ -2,9 +2,11 @@ package s_lqcd;
 
 import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
 import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVectorType;
 
 public class DFESu3 extends KernelLib  {
 
@@ -13,35 +15,34 @@ public class DFESu3 extends KernelLib  {
 	                  c20, c21, c22;
 
 	private final Kernel owner_kernel;
+	private final static DFEComplexType m_cplxType = new DFEComplexType(dfeFloat(8,24));
 
 	protected DFESu3(Kernel Owner) {
 		super(Owner);
 		owner_kernel = Owner;
-		DFEComplexType cplxType = new DFEComplexType(dfeFloat(8,24));
-		c00 = cplxType.newInstance(Owner);
-		c01 = cplxType.newInstance(Owner);
-		c02 = cplxType.newInstance(Owner);
-		c10 = cplxType.newInstance(Owner);
-		c11 = cplxType.newInstance(Owner);
-		c12 = cplxType.newInstance(Owner);
-		c20 = cplxType.newInstance(Owner);
-		c21 = cplxType.newInstance(Owner);
-		c22 = cplxType.newInstance(Owner);
+		c00 = m_cplxType.newInstance(Owner);
+		c01 = m_cplxType.newInstance(Owner);
+		c02 = m_cplxType.newInstance(Owner);
+		c10 = m_cplxType.newInstance(Owner);
+		c11 = m_cplxType.newInstance(Owner);
+		c12 = m_cplxType.newInstance(Owner);
+		c20 = m_cplxType.newInstance(Owner);
+		c21 = m_cplxType.newInstance(Owner);
+		c22 = m_cplxType.newInstance(Owner);
 	}
 
 	protected DFESu3(Kernel Owner, DFEVector<DFEComplex> su3) {
 		super(Owner);
 		owner_kernel = Owner;
-		DFEComplexType cplxType = new DFEComplexType(dfeFloat(8,24));
-		c00 = cplxType.newInstance(Owner);
-		c01 = cplxType.newInstance(Owner);
-		c02 = cplxType.newInstance(Owner);
-		c10 = cplxType.newInstance(Owner);
-		c11 = cplxType.newInstance(Owner);
-		c12 = cplxType.newInstance(Owner);
-		c20 = cplxType.newInstance(Owner);
-		c21 = cplxType.newInstance(Owner);
-		c22 = cplxType.newInstance(Owner);
+		c00 = m_cplxType.newInstance(Owner);
+		c01 = m_cplxType.newInstance(Owner);
+		c02 = m_cplxType.newInstance(Owner);
+		c10 = m_cplxType.newInstance(Owner);
+		c11 = m_cplxType.newInstance(Owner);
+		c12 = m_cplxType.newInstance(Owner);
+		c20 = m_cplxType.newInstance(Owner);
+		c21 = m_cplxType.newInstance(Owner);
+		c22 = m_cplxType.newInstance(Owner);
 
 		c00 = su3[0];
 		c01 = su3[1];
@@ -68,7 +69,7 @@ public class DFESu3 extends KernelLib  {
 		return temp;
 	}
 
-	public DFESu3Vector multiply (DFESu3Vector a) {
+	public DFESu3Vector mul (DFESu3Vector a) {
 		DFESu3Vector temp = new DFESu3Vector(owner_kernel);
 		temp.c0 = c00 * a.c0 + c01 *a.c1 + c02 * a.c2;
 		temp.c1 = c10 * a.c0 + c11 *a.c1 + c12 * a.c2;
@@ -84,4 +85,39 @@ public class DFESu3 extends KernelLib  {
 		return temp;
 	}
 
+	public DFESu3 adjoint () {
+		DFESu3 temp = new DFESu3(owner_kernel);
+		temp.c00 = c00.conjugate();
+		temp.c01 = c10.conjugate();
+		temp.c02 = c20.conjugate();
+		temp.c10 = c01.conjugate();
+		temp.c11 = c11.conjugate();
+		temp.c12 = c21.conjugate();
+		temp.c20 = c02.conjugate();
+		temp.c21 = c12.conjugate();
+		temp.c22 = c22.conjugate();
+		return temp;
+	}
+
+	static public DFESu3 muxselect(Kernel Owner, DFEVar cond, DFESu3 a, DFESu3 b) {
+		DFESu3 temp = new DFESu3(Owner);
+
+		temp.c00 = cond ? a.c00 : b.c00;
+		temp.c01 = cond ? a.c01 : b.c01;
+		temp.c02 = cond ? a.c02 : b.c02;
+		temp.c10 = cond ? a.c10 : b.c10;
+		temp.c11 = cond ? a.c11 : b.c11;
+		temp.c12 = cond ? a.c12 : b.c12;
+		temp.c20 = cond ? a.c20 : b.c20;
+		temp.c21 = cond ? a.c21 : b.c21;
+		temp.c22 = cond ? a.c22 : b.c22;
+
+		return temp;
+	}
+
+	static public DFEVectorType<DFEComplex> getDFESu3Type () {
+		DFEVectorType<DFEComplex> type =
+			new DFEVectorType<DFEComplex>(m_cplxType,9);
+		return type;
+	}
 }

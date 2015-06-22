@@ -2,6 +2,7 @@ package s_lqcd;
 
 import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
 import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
+import com.maxeler.maxcompiler.v2.kernelcompiler.stdlib.core.Stream.OffsetExpr;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
@@ -19,10 +20,6 @@ public class DFESpinor extends KernelLib {
 	protected DFESpinor(Kernel Owner) {
 		super(Owner);
 		owner_kernel = Owner;
-		s0 = new DFESu3Vector (Owner);
-		s1 = new DFESu3Vector (Owner);
-		s2 = new DFESu3Vector (Owner);
-		s3 = new DFESu3Vector (Owner);
 	}
 
 	protected DFESpinor(Kernel Owner, DFEVector<DFEComplex> in) {
@@ -49,6 +46,26 @@ public class DFESpinor extends KernelLib {
 		s3.c1 = in[10];
 		s3.c2 = in[11];
 
+	}
+
+	public DFESpinor streamoffset(OffsetExpr offset) {
+		DFESpinor temp = new DFESpinor(owner_kernel);
+
+		temp.s0 = s0.streamoffset(offset);
+		temp.s1 = s1.streamoffset(offset);
+		temp.s2 = s2.streamoffset(offset);
+		temp.s3 = s3.streamoffset(offset);
+
+		return temp;
+	}
+
+	DFESpinor add (DFESpinor a) {
+		DFESpinor temp = new DFESpinor(owner_kernel);
+		temp.s0 = s0 + a.s0;
+		temp.s1 = s1 + a.s1;
+		temp.s2 = s2 + a.s2;
+		temp.s3 = s3 + a.s3;
+		return temp;
 	}
 
 	static public DFEVectorType<DFEComplex> getDFESpinorType () {

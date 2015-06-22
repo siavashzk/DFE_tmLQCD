@@ -2,7 +2,6 @@ package s_lqcd;
 
 import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
 import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
-import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVectorType;
@@ -42,18 +41,4 @@ public class DFEHalfSpinor extends KernelLib {
 		return temp;
 	}
 
-	static public DFEHalfSpinor muxselect(Kernel Owner, DFEVar cond, DFEHalfSpinor a, DFEHalfSpinor b) {
-		DFEHalfSpinor temp = new DFEHalfSpinor(Owner);
-		temp.s0 = new DFESu3Vector(Owner);
-		temp.s1 = new DFESu3Vector(Owner);
-
-		temp.s0.c0 = cond ? a.s0.c0 : b.s0.c0;
-		temp.s0.c1 = cond ? a.s0.c1 : b.s0.c1;
-		temp.s0.c2 = cond ? a.s0.c2 : b.s0.c2;
-		temp.s1.c0 = cond ? a.s1.c0 : b.s1.c0;
-		temp.s1.c1 = cond ? a.s1.c1 : b.s1.c1;
-		temp.s1.c2 = cond ? a.s1.c2 : b.s1.c2;
-
-		return temp;
-	}
 }

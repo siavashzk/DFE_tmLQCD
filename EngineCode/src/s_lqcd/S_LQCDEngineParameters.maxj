@@ -10,6 +10,7 @@ public class S_LQCDEngineParameters extends EngineParameters {
 
 	private static final String s_L = "L";
 	private static final String s_T = "T";
+	private static final String s_numPipes = "P";
 	private static final String s_volume = "VOLUME";
 
 	@Override
@@ -17,6 +18,8 @@ public class S_LQCDEngineParameters extends EngineParameters {
 		declareParam(s_L, DataType.INT, 4);
 		declareParam(s_T, DataType.INT, 4);
 		declareParam(s_volume, DataType.INT, 256);
+		declareParam(s_numPipes, DataType.INT, 2);
+
 
 	}
 
@@ -37,6 +40,10 @@ public class S_LQCDEngineParameters extends EngineParameters {
 
 	public int getT(){
 		return getParam(s_T);
+	}
+
+	public int getNumPipes(){
+		return getParam(s_numPipes);
 	}
 
 	public int getVolume(){

@@ -41,7 +41,7 @@ int main(void) {
 	spinor *in, *out, *out_dfe, *out_expected;
 	su3 *uodd, *ueven, *u, *ueven_;
 
-	ka3 = ka2 = ka1 = ka0 = 1;
+	ka3 = ka2 = ka1 = ka0 = 1 + I*0;
 
 	in = malloc(VOLUME * sizeof(spinor));
 	out = &in[VOLUME / 2];
@@ -52,20 +52,20 @@ int main(void) {
 	ueven_ = malloc(VOLUME/2 * 4 * sizeof(su3));
 	u = malloc (VOLUME / 2 * 8 * sizeof(su3));
 
-	/*for (int i=0 ; i<VOLUME/2 ; i++ ) {
+	for (int i=0 ; i<VOLUME/2 ; i++ ) {
 		create_random_spinor(in + i);
 	}
 	for (int i=0 ; i<VOLUME*2 ; i++ ) {
 		create_random_su3(ueven + i);
 		create_random_su3(uodd + i);
-	}*/
-	read_spinor("in_spinor.txt", in);
+	}
+	/*read_spinor("in_spinor.txt", in);
 	read_spinor("out_spinor.txt", out_expected);
-	read_gauge("in_gauge0.txt", u, VOLUME/2);
+	read_gauge("in_gauge0.txt", u, VOLUME/2);*/
 
-	devide_gauge_to_oddeven(u, ueven_, uodd);
-	reorganize_back_ueven(ueven, ueven_);
-	//reorganize_ueven(ueven_, ueven);
+	//devide_gauge_to_oddeven(u, ueven_, uodd);
+	//reorganize_back_ueven(ueven, ueven_);
+	reorganize_ueven(ueven_, ueven);
 
 	spinor *in_halos = malloc(VOLUMEH1 * sizeof(spinor));
 	//spinor *out_halos = malloc(VOLUMEH2 * sizeof(spinor));
@@ -278,7 +278,7 @@ int compare_spinor (spinor *a, spinor *b) {
 void read_spinor(char * filename, spinor *out) {
 	FILE * fptr = fopen(filename, "r" );
 	char temp[64];
-
+	static int lock = 0;
 
 	for (int t=0 ; t<T ; t++ ) {
 		for (int z=0 ; z<L ; z++ ) {
@@ -291,6 +291,7 @@ void read_spinor(char * filename, spinor *out) {
 					int yy = y;               // to tmLQCD checkerboarding along
 					int xx = (2*x)+isOddRow;  // along y-axis
 
+					if (lock==0) printf("%d\n", (((((tt*L)+xx)*L)+yy)*L/2)+zz );
 					spinor *s = &out [ (((((tt*L)+xx)*L)+yy)*L/2)+zz ];
 
 					fgets (temp, 64, fptr);
@@ -328,6 +329,7 @@ void read_spinor(char * filename, spinor *out) {
 			}
 		}
 	}
+	lock = 1;
 	fclose(fptr);
 }
 
