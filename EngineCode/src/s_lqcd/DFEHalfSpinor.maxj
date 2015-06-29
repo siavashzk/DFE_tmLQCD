@@ -4,6 +4,7 @@ import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
 import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVectorType;
 
 public class DFEHalfSpinor extends KernelLib {
@@ -18,6 +19,32 @@ public class DFEHalfSpinor extends KernelLib {
 	protected DFEHalfSpinor(Kernel Owner) {
 		super(Owner);
 		owner_kernel = Owner;
+	}
+
+	protected DFEHalfSpinor(Kernel Owner, DFEVector<DFEComplex> in) {
+		super(Owner);
+		owner_kernel = Owner;
+		s0 = new DFESu3Vector (Owner);
+		s1 = new DFESu3Vector (Owner);
+
+		s0.c0 = in[0];
+		s0.c1 = in[1];
+		s0.c2 = in[2];
+
+		s1.c0 = in[3];
+		s1.c1 = in[4];
+		s1.c2 = in[5];
+
+	}
+
+	public void newInstant() {
+		s0 = new DFESu3Vector (owner_kernel);
+		s1 = new DFESu3Vector (owner_kernel);
+	}
+
+	public void connect (DFEHalfSpinor a) {
+		s0 <== a.s0;
+		s1 <== a.s1;
 	}
 
 	static public DFEVectorType<DFEComplex> getDFEHalfSpinorType () {
@@ -39,6 +66,19 @@ public class DFEHalfSpinor extends KernelLib {
 		temp.s1.c2 = stream.offset(s1.c2, offset);
 
 		return temp;
+	}
+
+	public DFEVector<DFEComplex> convertToDFEVector () {
+		DFEVector<DFEComplex> result = getDFEHalfSpinorType().newInstance(owner_kernel);
+
+		result[0]  <== s0.c0;
+		result[1]  <== s0.c1;
+		result[2]  <== s0.c2;
+		result[3]  <== s1.c0;
+		result[4]  <== s1.c1;
+		result[5]  <== s1.c2;
+
+		return result;
 	}
 
 }

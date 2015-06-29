@@ -7,7 +7,7 @@
 #  define EXTERN extern
 #endif
 
-EXTERN int L, T, VOLUME;
+EXTERN int T, VOLUME;
 EXTERN int LX, LY, LZ;
 
 EXTERN double ka0, ka1, ka2, ka3;

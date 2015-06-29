@@ -8,24 +8,30 @@ public class S_LQCDEngineParameters extends EngineParameters {
 		super(args);
 	}
 
-	private static final String s_L = "L";
+	private static final String s_LX = "LX";
+	private static final String s_LY = "LY";
+	private static final String s_LZ = "LZ";
 	private static final String s_T = "T";
 	private static final String s_numPipes = "P";
+	private static final String s_loopOffset = "LOOP_OFFSET";
 	private static final String s_volume = "VOLUME";
 
 	@Override
 	protected void declarations() {
-		declareParam(s_L, DataType.INT, 4);
 		declareParam(s_T, DataType.INT, 4);
-		declareParam(s_volume, DataType.INT, 256);
+		declareParam(s_LX, DataType.INT, 4);
+		declareParam(s_LY, DataType.INT, 4);
+		declareParam(s_LZ, DataType.INT, 8);
 		declareParam(s_numPipes, DataType.INT, 2);
+		declareParam(s_loopOffset, DataType.INT, 16);
+		declareParam(s_volume, DataType.INT, 256);
 
 
 	}
 
 	@Override
 	protected void deriveParameters() {
-		deriveParam(s_volume, getL() * getL() * getL() * getT() );
+		deriveParam(s_volume, getLX() * getLY() * getLZ() * getT() );
 	}
 //
 //	@Override
@@ -34,8 +40,16 @@ public class S_LQCDEngineParameters extends EngineParameters {
 //			throw new IllegalArgumentException("Stream frequency should be > 0.");
 //	}
 //
-	public int getL(){
-		return getParam(s_L);
+	public int getLX(){
+		return getParam(s_LX);
+	}
+
+	public int getLY(){
+		return getParam(s_LY);
+	}
+
+	public int getLZ(){
+		return getParam(s_LZ);
 	}
 
 	public int getT(){
@@ -46,12 +60,18 @@ public class S_LQCDEngineParameters extends EngineParameters {
 		return getParam(s_numPipes);
 	}
 
+	public int getLoopOffset(){
+		return getParam(s_loopOffset);
+	}
+
 	public int getVolume(){
 		return getParam(s_volume);
 	}
 
 	@Override
 	public String getBuildName() {
-		return getMaxFileName() + "_" + getTarget() + "_L" + getL() + "_T" + getT();
+		return getMaxFileName() + "_" + getTarget() +
+		       "_" + getT() + "_" + getLX() + "_" +
+		       getLY() + "_" + getLZ();
 	}
 }

@@ -2,7 +2,6 @@ package s_lqcd;
 
 import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
 import com.maxeler.maxcompiler.v2.kernelcompiler.KernelLib;
-import com.maxeler.maxcompiler.v2.kernelcompiler.stdlib.core.Stream.OffsetExpr;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
 import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEVector;
@@ -25,10 +24,10 @@ public class DFESpinor extends KernelLib {
 	protected DFESpinor(Kernel Owner, DFEVector<DFEComplex> in) {
 		super(Owner);
 		owner_kernel = Owner;
-		s0 = new DFESu3Vector (Owner);
-		s1 = new DFESu3Vector (Owner);
-		s2 = new DFESu3Vector (Owner);
-		s3 = new DFESu3Vector (Owner);
+		s0 = new DFESu3Vector (owner_kernel);
+		s1 = new DFESu3Vector (owner_kernel);
+		s2 = new DFESu3Vector (owner_kernel);
+		s3 = new DFESu3Vector (owner_kernel);
 
 		s0.c0 = in[0];
 		s0.c1 = in[1];
@@ -48,7 +47,14 @@ public class DFESpinor extends KernelLib {
 
 	}
 
-	public DFESpinor streamoffset(OffsetExpr offset) {
+	public void newInstant() {
+		s0 = new DFESu3Vector (owner_kernel);
+		s1 = new DFESu3Vector (owner_kernel);
+		s2 = new DFESu3Vector (owner_kernel);
+		s3 = new DFESu3Vector (owner_kernel);
+	}
+
+	public DFESpinor streamoffset(int offset) {
 		DFESpinor temp = new DFESpinor(owner_kernel);
 
 		temp.s0 = s0.streamoffset(offset);

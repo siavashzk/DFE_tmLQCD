@@ -99,6 +99,20 @@ public class DFESu3 extends KernelLib  {
 		return temp;
 	}
 
+	public DFESu3 transpose () {
+		DFESu3 temp = new DFESu3(owner_kernel);
+		temp.c00 = c00;
+		temp.c01 = c10;
+		temp.c02 = c20;
+		temp.c10 = c01;
+		temp.c11 = c11;
+		temp.c12 = c21;
+		temp.c20 = c02;
+		temp.c21 = c12;
+		temp.c22 = c22;
+		return temp;
+	}
+
 	static public DFESu3 muxselect(Kernel Owner, DFEVar cond, DFESu3 a, DFESu3 b) {
 		DFESu3 temp = new DFESu3(Owner);
 

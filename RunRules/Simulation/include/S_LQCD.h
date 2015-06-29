@@ -6,6 +6,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#define S_LQCD_LZ (8)
+#define S_LQCD_LY (4)
+#define S_LQCD_LX (4)
+#define S_LQCD_T (4)
 #define S_LQCD_PCIE_ALIGNMENT (16)
 
 
@@ -21,18 +25,26 @@ extern "C" {
  * 
  * \param [in] param_cfactor Interface Parameter "cfactor".
  * \param [in] param_ka Interface Parameter "ka".
- * \param [in] instream_times1kernel_gauge0 The stream should be of size 186624 bytes.
- * \param [in] instream_times1kernel_gauge1 The stream should be of size 186624 bytes.
- * \param [in] instream_times1kernel_spinor_in The stream should be of size 62208 bytes.
- * \param [out] outstream_times1kernel_spinor_out The stream should be of size 12288 bytes.
+ * \param [in] instream_times1kernel_gauge0 Stream "times1kernel_gauge0".
+ * \param [in] instream_size_times1kernel_gauge0 The size of the stream instream_times1kernel_gauge0 in bytes.
+ * \param [in] instream_times1kernel_gauge1 Stream "times1kernel_gauge1".
+ * \param [in] instream_size_times1kernel_gauge1 The size of the stream instream_times1kernel_gauge1 in bytes.
+ * \param [in] instream_times1kernel_spinor_in Stream "times1kernel_spinor_in".
+ * \param [in] instream_size_times1kernel_spinor_in The size of the stream instream_times1kernel_spinor_in in bytes.
+ * \param [out] outstream_times1kernel_spinor_out Stream "times1kernel_spinor_out".
+ * \param [in] outstream_size_times1kernel_spinor_out The size of the stream outstream_times1kernel_spinor_out in bytes.
  */
 void S_LQCD(
 	float param_cfactor,
 	float param_ka,
-	const float *instream_times1kernel_gauge0,
-	const float *instream_times1kernel_gauge1,
-	const float *instream_times1kernel_spinor_in,
-	float *outstream_times1kernel_spinor_out);
+	const void *instream_times1kernel_gauge0,
+	size_t instream_size_times1kernel_gauge0,
+	const void *instream_times1kernel_gauge1,
+	size_t instream_size_times1kernel_gauge1,
+	const void *instream_times1kernel_spinor_in,
+	size_t instream_size_times1kernel_spinor_in,
+	void *outstream_times1kernel_spinor_out,
+	size_t outstream_size_times1kernel_spinor_out);
 
 /**
  * \brief Basic static non-blocking function for the interface 'default'.
@@ -44,19 +56,27 @@ void S_LQCD(
  * 
  * \param [in] param_cfactor Interface Parameter "cfactor".
  * \param [in] param_ka Interface Parameter "ka".
- * \param [in] instream_times1kernel_gauge0 The stream should be of size 186624 bytes.
- * \param [in] instream_times1kernel_gauge1 The stream should be of size 186624 bytes.
- * \param [in] instream_times1kernel_spinor_in The stream should be of size 62208 bytes.
- * \param [out] outstream_times1kernel_spinor_out The stream should be of size 12288 bytes.
+ * \param [in] instream_times1kernel_gauge0 Stream "times1kernel_gauge0".
+ * \param [in] instream_size_times1kernel_gauge0 The size of the stream instream_times1kernel_gauge0 in bytes.
+ * \param [in] instream_times1kernel_gauge1 Stream "times1kernel_gauge1".
+ * \param [in] instream_size_times1kernel_gauge1 The size of the stream instream_times1kernel_gauge1 in bytes.
+ * \param [in] instream_times1kernel_spinor_in Stream "times1kernel_spinor_in".
+ * \param [in] instream_size_times1kernel_spinor_in The size of the stream instream_times1kernel_spinor_in in bytes.
+ * \param [out] outstream_times1kernel_spinor_out Stream "times1kernel_spinor_out".
+ * \param [in] outstream_size_times1kernel_spinor_out The size of the stream outstream_times1kernel_spinor_out in bytes.
  * \return A handle on the execution status, or NULL in case of error.
  */
 max_run_t *S_LQCD_nonblock(
 	float param_cfactor,
 	float param_ka,
-	const float *instream_times1kernel_gauge0,
-	const float *instream_times1kernel_gauge1,
-	const float *instream_times1kernel_spinor_in,
-	float *outstream_times1kernel_spinor_out);
+	const void *instream_times1kernel_gauge0,
+	size_t instream_size_times1kernel_gauge0,
+	const void *instream_times1kernel_gauge1,
+	size_t instream_size_times1kernel_gauge1,
+	const void *instream_times1kernel_spinor_in,
+	size_t instream_size_times1kernel_spinor_in,
+	void *outstream_times1kernel_spinor_out,
+	size_t outstream_size_times1kernel_spinor_out);
 
 /**
  * \brief Advanced static interface, structure for the engine interface 'default'
@@ -65,10 +85,14 @@ max_run_t *S_LQCD_nonblock(
 typedef struct { 
 	float param_cfactor; /**<  [in] Interface Parameter "cfactor". */
 	float param_ka; /**<  [in] Interface Parameter "ka". */
-	const float *instream_times1kernel_gauge0; /**<  [in] The stream should be of size 186624 bytes. */
-	const float *instream_times1kernel_gauge1; /**<  [in] The stream should be of size 186624 bytes. */
-	const float *instream_times1kernel_spinor_in; /**<  [in] The stream should be of size 62208 bytes. */
-	float *outstream_times1kernel_spinor_out; /**<  [out] The stream should be of size 12288 bytes. */
+	const void *instream_times1kernel_gauge0; /**<  [in] Stream "times1kernel_gauge0". */
+	size_t instream_size_times1kernel_gauge0; /**<  [in] The size of the stream instream_times1kernel_gauge0 in bytes. */
+	const void *instream_times1kernel_gauge1; /**<  [in] Stream "times1kernel_gauge1". */
+	size_t instream_size_times1kernel_gauge1; /**<  [in] The size of the stream instream_times1kernel_gauge1 in bytes. */
+	const void *instream_times1kernel_spinor_in; /**<  [in] Stream "times1kernel_spinor_in". */
+	size_t instream_size_times1kernel_spinor_in; /**<  [in] The size of the stream instream_times1kernel_spinor_in in bytes. */
+	void *outstream_times1kernel_spinor_out; /**<  [out] Stream "times1kernel_spinor_out". */
+	size_t outstream_size_times1kernel_spinor_out; /**<  [in] The size of the stream outstream_times1kernel_spinor_out in bytes. */
 } S_LQCD_actions_t;
 
 /**

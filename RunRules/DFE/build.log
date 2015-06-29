@@ -1,140 +1,143 @@
-Thu 20:21: ########################################## 
-Thu 20:21: Compiling.
-Thu 20:21: ########################################## 
+Wed 19:30: ########################################## 
+Wed 19:30: Compiling.
+Wed 19:30: ########################################## 
 
-Thu 20:21: MaxCompiler version: 2014.2.
-Thu 20:21: Build DFE run rule for DFE_tmLQCD start time: Thu Jun 18 20:21:02 BST 2015.
-Thu 20:21: Project location: /home/skamali/workspace3/DFE_tmLQCD.
-Thu 20:21: Detailed build log: /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/build.log.
+Wed 19:30: MaxCompiler version: 2014.2.
+Wed 19:30: Build DFE run rule for DFE_tmLQCD start time: Wed Jun 24 19:30:49 BST 2015.
+Wed 19:30: Project location: /home/skamali/workspace3/DFE_tmLQCD.
+Wed 19:30: Detailed build log: /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/build.log.
 
-Thu 20:21: Compiling Engine Code.
-Thu 20:21: Building S_LQCD.max file. 
-Thu 20:21: Setting environment variable:
-Thu 20:21: MAXCOMPILER_BUILD_DIR : /network-scratch/skamali/maxdc_builds/
-Thu 20:21: MAX_BUILDPARAMS : DFEModel='MAIA' target='DFE' maxFileName='S_LQCD' MPPREndCT='8' MPPRThreads='4'  
-Thu 20:21: Building output:
-Thu 20:21: MaxCompiler version: 2014.2
-Thu 20:21: Build "S_LQCD" start time: Thu Jun 18 20:21:05 BST 2015
-Thu 20:21: Main build process running as user skamali on host nxws27.office.maxeler.com
-Thu 20:21: Build location: /scratch/skamali/maxdc_builds/18-06-15/S_LQCD_DFE_L4_T4
-Thu 20:21: Detailed build log available in "_build.log"
-Thu 20:21: 
-Thu 20:21: ENGINE BUILD PARAMETERS
-Thu 20:21: 	        Build name: S_LQCD_DFE_L4_T4
-Thu 20:21: 	          DFEModel: MAIA            
-Thu 20:21: 	       maxFileName: S_LQCD          
-Thu 20:21: 	            target: DFE             
-Thu 20:21: 	        enableMPCX: false           
-Thu 20:21: 	       MPPRStartCT: 1               
-Thu 20:21: 	         MPPREndCT: 8               
-Thu 20:21: 	       MPPRThreads: 4               
-Thu 20:21: 	MPPRRetryThreshold: 0               
-Thu 20:21: 	                 L: 4               
-Thu 20:21: 	                 T: 4               
-Thu 20:21: 	            VOLUME: 256             
-Thu 20:21: 	                 P: 2               
-Thu 20:21: Instantiating kernel "times1kernel"
-Thu 20:21: WARNING: Transitioning from non-multiple stream widths 128 to 576 via a stream of width 1152 is suboptimal for performance and resource utilization.  Use Manager.setAllowNonMultipleTransitions(true) or config.setAllowNonMultipleTransitions(true) (in a CustomManager) to allow such transitions.
-Thu 20:21: WARNING: Source='times1kernel_gauge0.times1kernel_gauge0' Sink='times1kernel.times1kernel_gauge0'
-Thu 20:21: WARNING: Transitioning from non-multiple stream widths 128 to 576 via a stream of width 1152 is suboptimal for performance and resource utilization.  Use Manager.setAllowNonMultipleTransitions(true) or config.setAllowNonMultipleTransitions(true) (in a CustomManager) to allow such transitions.
-Thu 20:21: WARNING: Source='times1kernel_gauge1.times1kernel_gauge1' Sink='times1kernel.times1kernel_gauge1'
-Thu 20:21: 
-Thu 20:21: Compiling kernel "times1kernel"
-Thu 20:21: WARNING: Warning (UNCONNECTED_DESIGN_ELEMENT):
-Thu 20:21: WARNING: Unconnected elements in design 'times1kernel'
-Thu 20:21: WARNING: details in : /scratch/skamali/maxdc_builds/18-06-15/S_LQCD_DFE_L4_T4/scratch/times1kernel_graph_warnings.txt
-Thu 20:21: Generating input files (VHDL, netlists, MegaWizard/CoreGen)
-Thu 20:21: Running back-end  build (16 phases)
-Thu 20:21: (1/16) - Prepare MaxFile Data (GenerateMaxFileDataFile)
-Thu 20:21: (2/16) - Prepare for Placement (QuartusMap)
-Thu 20:57: (3/16) - Generate Incremental Netlist (QuartusCdb)
-Thu 21:00: (4/16) - Generate Resource Report (AlteraResourceUsageBuildPass)
-Thu 21:00: (5/16) - Generate Annotated Source Code (AlteraResourceAnnotationBuildPass)
-Thu 21:01: (6/16) - Analyse Resource Usage (AlteraResourceCounterPass)
-Thu 21:01: 
-Thu 21:01: About to start chip vendor Map/Place/Route toolflow. This will take some time.
-Thu 21:01: For this compile, we estimate this process may take longer than 1 hour.
-Thu 21:01: We recommend running in simulation to verify correctness before building hardware.
-Thu 21:01: 
-Thu 21:01: PRELIMINARY RESOURCE USAGE
-Thu 21:01: Logic utilization:     137228 / 262400   (52.30%)
-Thu 21:01: Multipliers (18x18):      240 / 3926     (6.11%)
-Thu 21:01: Block memory (bits):  4554837 / 52572160 (8.66%)
-Thu 21:01: 
-Thu 21:01: (7/16) - Place and Route DFE (AlteraMPPR)
-Thu 21:01: Executing MPPR with 8 cost tables and 4 threads.
-Thu 21:01: MPPR: Starting 8 cost tables
-Thu 22:22: MPPR: Cost table 1 met timing with score 0 (best score 0)
-Thu 22:22: (8/16) - Generate Configuration (QuartusAsm)
-Thu 22:26: (9/16) - Convert Programming File (QuartusCpf)
-Thu 22:27: (10/16) - Update Checksum (UpdateChecksumBuildPass)
-Thu 22:27: (11/16) - Generate Incremental Netlist (QuartusCdb)
-Thu 22:29: (12/16) - Generate Configuration (QuartusAsm)
-Thu 22:32: (13/16) - Convert Programming File (QuartusCpf)
-Thu 22:33: (14/16) - Generate Resource Report (AlteraResourceUsageBuildPass)
-Thu 22:33: (15/16) - Generate Annotated Source Code (AlteraResourceAnnotationBuildPass)
-Thu 22:34: (16/16) - Generate MaxFile (GenerateMaxFileAltera)
-Thu 22:34: 
-Thu 22:34: FINAL RESOURCE USAGE
-Thu 22:34: Logic utilization:   116049 / 262400 (44.23%)
-Thu 22:34:   Primary FFs:       221944 / 524800 (42.29%)
-Thu 22:34:   Secondary FFs:       9519 / 524800 (1.81%)
-Thu 22:34: Multipliers (18x18):    240 / 3926   (6.11%)
-Thu 22:34:   DSP blocks:           120 / 1963   (6.11%)
-Thu 22:34: Block memory (M20K):    728 / 2567   (28.36%)
-Thu 22:34: 
-Thu 22:34: MaxFile: /scratch/skamali/maxdc_builds/18-06-15/S_LQCD_DFE_L4_T4/results/S_LQCD.max (MD5Sum: 44fd3647ae86b6961b139d3022cfdaa4)
-Thu 22:34: Build completed: Thu Jun 18 22:34:42 BST 2015 (took 2 hours, 13 mins, 36 secs)
-Thu 22:34: Executing command:
-Thu 22:34: cp /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/maxfiles/S_LQCD.h /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/include/S_LQCD.h 
-Thu 22:34: Command output:
-Thu 22:34: Building: S_LQCD.max file finished.
-Thu 22:34: Engine build finished.
-Thu 22:34: Compiling CPU Code.
-Thu 22:34: Run CPU project make files updating
-Thu 22:34: Executing command:
-Thu 22:34: java -jar /network-raid/opt/maxcompiler-2014.2/lib/MaxIDE/projectAdmin.jar -u /home/skamali/workspace3/DFE_tmLQCD DFE 
-Thu 22:34: Command output:
+Wed 19:30: Compiling Engine Code.
+Wed 19:30: Building S_LQCD.max file. 
+Wed 19:30: Setting environment variable:
+Wed 19:30: MAXCOMPILER_BUILD_DIR : /network-scratch/skamali/maxdc_builds/
+Wed 19:30: MAX_BUILDPARAMS : DFEModel='MAIA' target='DFE' maxFileName='S_LQCD' MPPREndCT='8' MPPRThreads='4'  
+Wed 19:30: Building output:
+Wed 19:30: MaxCompiler version: 2014.2
+Wed 19:30: Build "S_LQCD" start time: Wed Jun 24 19:30:52 BST 2015
+Wed 19:30: Main build process running as user skamali on host nxws27.office.maxeler.com
+Wed 19:30: Build location: /scratch/skamali/maxdc_builds/24-06-15/S_LQCD_DFE_4_4_4_8
+Wed 19:30: Detailed build log available in "_build.log"
+Wed 19:30: 
+Wed 19:30: ENGINE BUILD PARAMETERS
+Wed 19:30: 	        Build name: S_LQCD_DFE_4_4_4_8
+Wed 19:30: 	          DFEModel: MAIA              
+Wed 19:30: 	       maxFileName: S_LQCD            
+Wed 19:30: 	            target: DFE               
+Wed 19:30: 	        enableMPCX: false             
+Wed 19:30: 	       MPPRStartCT: 1                 
+Wed 19:30: 	         MPPREndCT: 8                 
+Wed 19:30: 	       MPPRThreads: 4                 
+Wed 19:30: 	MPPRRetryThreshold: 0                 
+Wed 19:30: 	                 T: 4                 
+Wed 19:30: 	                LX: 4                 
+Wed 19:30: 	                LY: 4                 
+Wed 19:30: 	                LZ: 8                 
+Wed 19:30: 	                 P: 2                 
+Wed 19:30: 	       LOOP_OFFSET: 8                 
+Wed 19:30: 	            VOLUME: 512               
+Wed 19:30: Instantiating kernel "times1kernel"
+Wed 19:30: WARNING: Transitioning from non-multiple stream widths 128 to 576 via a stream of width 1152 is suboptimal for performance and resource utilization.  Use Manager.setAllowNonMultipleTransitions(true) or config.setAllowNonMultipleTransitions(true) (in a CustomManager) to allow such transitions.
+Wed 19:30: WARNING: Source='times1kernel_gauge0.times1kernel_gauge0' Sink='times1kernel.times1kernel_gauge0'
+Wed 19:30: WARNING: Transitioning from non-multiple stream widths 128 to 576 via a stream of width 1152 is suboptimal for performance and resource utilization.  Use Manager.setAllowNonMultipleTransitions(true) or config.setAllowNonMultipleTransitions(true) (in a CustomManager) to allow such transitions.
+Wed 19:30: WARNING: Source='times1kernel_gauge1.times1kernel_gauge1' Sink='times1kernel.times1kernel_gauge1'
+Wed 19:30: 
+Wed 19:30: Compiling kernel "times1kernel"
+Wed 19:30: WARNING: Warning (UNCONNECTED_DESIGN_ELEMENT):
+Wed 19:30: WARNING: Unconnected elements in design 'times1kernel'
+Wed 19:30: WARNING: details in : /scratch/skamali/maxdc_builds/24-06-15/S_LQCD_DFE_4_4_4_8/scratch/times1kernel_graph_warnings.txt
+Wed 19:31: Generating input files (VHDL, netlists, MegaWizard/CoreGen)
+Wed 19:31: Running back-end  build (16 phases)
+Wed 19:31: (1/16) - Prepare MaxFile Data (GenerateMaxFileDataFile)
+Wed 19:31: (2/16) - Prepare for Placement (QuartusMap)
+Wed 19:51: (3/16) - Generate Incremental Netlist (QuartusCdb)
+Wed 19:52: (4/16) - Generate Resource Report (AlteraResourceUsageBuildPass)
+Wed 19:52: (5/16) - Generate Annotated Source Code (AlteraResourceAnnotationBuildPass)
+Wed 19:53: (6/16) - Analyse Resource Usage (AlteraResourceCounterPass)
+Wed 19:53: 
+Wed 19:53: About to start chip vendor Map/Place/Route toolflow. This will take some time.
+Wed 19:53: For this compile, we estimate this process may take up to 1 hour.
+Wed 19:53: We recommend running in simulation to verify correctness before building hardware.
+Wed 19:53: 
+Wed 19:53: PRELIMINARY RESOURCE USAGE
+Wed 19:53: Logic utilization:      67245 / 262400   (25.63%)
+Wed 19:53: Multipliers (18x18):      240 / 3926     (6.11%)
+Wed 19:53: Block memory (bits):  5356361 / 52572160 (10.19%)
+Wed 19:53: 
+Wed 19:53: (7/16) - Place and Route DFE (AlteraMPPR)
+Wed 19:53: Executing MPPR with 8 cost tables and 4 threads.
+Wed 19:53: MPPR: Starting 8 cost tables
+Wed 20:38: MPPR: Cost table 4 met timing with score 0 (best score 0)
+Wed 20:38: (8/16) - Generate Configuration (QuartusAsm)
+Wed 20:41: (9/16) - Convert Programming File (QuartusCpf)
+Wed 20:42: (10/16) - Update Checksum (UpdateChecksumBuildPass)
+Wed 20:42: (11/16) - Generate Incremental Netlist (QuartusCdb)
+Wed 20:43: (12/16) - Generate Configuration (QuartusAsm)
+Wed 20:46: (13/16) - Convert Programming File (QuartusCpf)
+Wed 20:46: (14/16) - Generate Resource Report (AlteraResourceUsageBuildPass)
+Wed 20:46: (15/16) - Generate Annotated Source Code (AlteraResourceAnnotationBuildPass)
+Wed 20:47: (16/16) - Generate MaxFile (GenerateMaxFileAltera)
+Wed 20:47: 
+Wed 20:47: FINAL RESOURCE USAGE
+Wed 20:47: Logic utilization:    64660 / 262400 (24.64%)
+Wed 20:47:   Primary FFs:        96590 / 524800 (18.41%)
+Wed 20:47:   Secondary FFs:       3859 / 524800 (0.74%)
+Wed 20:47: Multipliers (18x18):    240 / 3926   (6.11%)
+Wed 20:47:   DSP blocks:           120 / 1963   (6.11%)
+Wed 20:47: Block memory (M20K):    438 / 2567   (17.06%)
+Wed 20:47: 
+Wed 20:47: MaxFile: /scratch/skamali/maxdc_builds/24-06-15/S_LQCD_DFE_4_4_4_8/results/S_LQCD.max (MD5Sum: 315c319a6f7b87e3ce096733ebb25dca)
+Wed 20:47: Build completed: Wed Jun 24 20:47:28 BST 2015 (took 1 hour, 16 mins, 35 secs)
+Wed 20:47: Executing command:
+Wed 20:47: cp /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/maxfiles/S_LQCD.h /home/skamali/workspace3/DFE_tmLQCD/RunRules/DFE/include/S_LQCD.h 
+Wed 20:47: Command output:
+Wed 20:47: Building: S_LQCD.max file finished.
+Wed 20:47: Engine build finished.
+Wed 20:47: Compiling CPU Code.
+Wed 20:47: Run CPU project make files updating
+Wed 20:47: Executing command:
+Wed 20:47: java -jar /network-raid/opt/maxcompiler-2014.2/lib/MaxIDE/projectAdmin.jar -u /home/skamali/workspace3/DFE_tmLQCD DFE 
+Wed 20:47: Command output:
 
-Thu 22:34: MaxCompiler Project Admin Tool Version 2014.2
-Thu 22:34:  Copyright Maxeler Technologies 2010 - 2014. All rights reserved.
-Thu 22:34: Handler version 2
-Thu 22:34: Updating RunRule dependent Makefiles for RunRule 'DFE'
-Thu 22:34: 	Updating: DFE
-Thu 22:34: Found makefiles: 1
-Thu 22:34: 	Updated: DFE
-Thu 22:34: Run CPU make.
-Thu 22:34: make RUNRULE=DFE 
-Thu 22:34: Command output:
-Thu 22:34: make -f Makefile.rules build
-Thu 22:34: make[1]: Entering directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
-Thu 22:34: set -e; rm -f ../RunRules/DFE/objects/c/hopping.d ;                                                             \
-Thu 22:34: 	  cc -M -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -Wno-error hopping.c > ../RunRules/DFE/objects/c/hopping.d.$$ ;                                 \
-Thu 22:34:       sed 's,\(hopping\)\.o[ :]*,../RunRules/DFE/objects/c/\1.o ../RunRules/DFE/objects/c/hopping.d : ,g' < ../RunRules/DFE/objects/c/hopping.d.$$ > ../RunRules/DFE/objects/c/hopping.d; \
-Thu 22:34:       rm -f ../RunRules/DFE/objects/c/hopping.d.$$
-Thu 22:34: set -e; rm -f ../RunRules/DFE/objects/c/geometry.d ;                                                             \
-Thu 22:34: 	  cc -M -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -Wno-error geometry.c > ../RunRules/DFE/objects/c/geometry.d.$$ ;                                 \
-Thu 22:34:       sed 's,\(geometry\)\.o[ :]*,../RunRules/DFE/objects/c/\1.o ../RunRules/DFE/objects/c/geometry.d : ,g' < ../RunRules/DFE/objects/c/geometry.d.$$ > ../RunRules/DFE/objects/c/geometry.d; \
-Thu 22:34:       rm -f ../RunRules/DFE/objects/c/geometry.d.$$
-Thu 22:34: set -e; rm -f ../RunRules/DFE/objects/c/S_LQCDCpuCode.d ;                                                             \
-Thu 22:34: 	  cc -M -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -Wno-error S_LQCDCpuCode.c > ../RunRules/DFE/objects/c/S_LQCDCpuCode.d.$$ ;                                 \
-Thu 22:34:       sed 's,\(S_LQCDCpuCode\)\.o[ :]*,../RunRules/DFE/objects/c/\1.o ../RunRules/DFE/objects/c/S_LQCDCpuCode.d : ,g' < ../RunRules/DFE/objects/c/S_LQCDCpuCode.d.$$ > ../RunRules/DFE/objects/c/S_LQCDCpuCode.d; \
-Thu 22:34:       rm -f ../RunRules/DFE/objects/c/S_LQCDCpuCode.d.$$
-Thu 22:34: make[1]: Leaving directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
-Thu 22:34: make[1]: Entering directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
-Thu 22:34: "/network-raid/opt/maxcompiler-2014.2/bin/sliccompile" ../RunRules/DFE/maxfiles/S_LQCD.max ../RunRules/DFE/objects/maxfiles/slic_S_LQCD.o
-Thu 22:34: Processing maxfile for MAIA from '../RunRules/DFE/maxfiles/S_LQCD.max'.
-Thu 22:34: gcc -std=gnu99 -Wall -Werror -fno-guess-branch-probability -frandom-seed=foo -Wno-unused-variable -Wno-unused-function -fPIC -I /network-raid/opt/maxcompiler-2014.2/include/slic -DMAXFILE_INC="/home/skamali/workspace3/DFE_tmLQCD/CPUCode/../RunRules/DFE/maxfiles/S_LQCD.max" -DSLIC_NO_DESTRUCTORS -c /network-raid/opt/maxcompiler-2014.2/src/slicinterface/MaxFileInit.c -o slic_S_LQCD.o 
-Thu 22:35: Copying .max file C object into '/home/skamali/workspace3/DFE_tmLQCD/CPUCode/../RunRules/DFE/objects/maxfiles'
-Thu 22:35: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -c S_LQCDCpuCode.c -o ../RunRules/DFE/objects/c/S_LQCDCpuCode.o
-Thu 22:35: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -c geometry.c -o ../RunRules/DFE/objects/c/geometry.o
-Thu 22:35: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -c hopping.c -o ../RunRules/DFE/objects/c/hopping.o
-Thu 22:35: hopping.c: In function 'Qtm_pm_psi':
-Thu 22:35: hopping.c:37: warning: unused variable 'temp2'
-Thu 22:35: hopping.c:36: warning: unused variable 'temp'
-Thu 22:35: hopping.c:35: warning: unused parameter 'cfactor1'
-Thu 22:35: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -o ../RunRules/DFE/binaries/S_LQCD ../RunRules/DFE/objects/maxfiles/slic_S_LQCD.o ../RunRules/DFE/objects/c/S_LQCDCpuCode.o ../RunRules/DFE/objects/c/geometry.o ../RunRules/DFE/objects/c/hopping.o -g -O3  -L '/network-raid/opt/maxcompiler-2014.2/lib' -lslic -L '/network-raid/opt/maxeleros-2014.2/maxeleros/lib' -lmaxeleros -lpthread -lm -lrt 
-Thu 22:35: make[1]: Leaving directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
-Thu 22:35: Build completed: Thu Jun 18 22:35:15 BST 2015
+Wed 20:47: MaxCompiler Project Admin Tool Version 2014.2
+Wed 20:47:  Copyright Maxeler Technologies 2010 - 2014. All rights reserved.
+Wed 20:47: Handler version 2
+Wed 20:47: Updating RunRule dependent Makefiles for RunRule 'DFE'
+Wed 20:47: 	Updating: DFE
+Wed 20:47: Found makefiles: 1
+Wed 20:47: 	Updated: DFE
+Wed 20:47: Run CPU make.
+Wed 20:47: make RUNRULE=DFE 
+Wed 20:47: Command output:
+Wed 20:47: make -f Makefile.rules build
+Wed 20:47: make[1]: Entering directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
+Wed 20:47: set -e; rm -f ../RunRules/DFE/objects/c/hopping.d ;                                                             \
+Wed 20:47: 	  cc -M -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -Wno-error hopping.c > ../RunRules/DFE/objects/c/hopping.d.$$ ;                                 \
+Wed 20:47:       sed 's,\(hopping\)\.o[ :]*,../RunRules/DFE/objects/c/\1.o ../RunRules/DFE/objects/c/hopping.d : ,g' < ../RunRules/DFE/objects/c/hopping.d.$$ > ../RunRules/DFE/objects/c/hopping.d; \
+Wed 20:47:       rm -f ../RunRules/DFE/objects/c/hopping.d.$$
+Wed 20:47: set -e; rm -f ../RunRules/DFE/objects/c/geometry.d ;                                                             \
+Wed 20:47: 	  cc -M -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -Wno-error geometry.c > ../RunRules/DFE/objects/c/geometry.d.$$ ;                                 \
+Wed 20:47:       sed 's,\(geometry\)\.o[ :]*,../RunRules/DFE/objects/c/\1.o ../RunRules/DFE/objects/c/geometry.d : ,g' < ../RunRules/DFE/objects/c/geometry.d.$$ > ../RunRules/DFE/objects/c/geometry.d; \
+Wed 20:47:       rm -f ../RunRules/DFE/objects/c/geometry.d.$$
+Wed 20:47: set -e; rm -f ../RunRules/DFE/objects/c/S_LQCDCpuCode.d ;                                                             \
+Wed 20:47: 	  cc -M -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -Wno-error S_LQCDCpuCode.c > ../RunRules/DFE/objects/c/S_LQCDCpuCode.d.$$ ;                                 \
+Wed 20:47:       sed 's,\(S_LQCDCpuCode\)\.o[ :]*,../RunRules/DFE/objects/c/\1.o ../RunRules/DFE/objects/c/S_LQCDCpuCode.d : ,g' < ../RunRules/DFE/objects/c/S_LQCDCpuCode.d.$$ > ../RunRules/DFE/objects/c/S_LQCDCpuCode.d; \
+Wed 20:47:       rm -f ../RunRules/DFE/objects/c/S_LQCDCpuCode.d.$$
+Wed 20:47: make[1]: Leaving directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
+Wed 20:47: make[1]: Entering directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
+Wed 20:47: "/network-raid/opt/maxcompiler-2014.2/bin/sliccompile" ../RunRules/DFE/maxfiles/S_LQCD.max ../RunRules/DFE/objects/maxfiles/slic_S_LQCD.o
+Wed 20:47: Processing maxfile for MAIA from '../RunRules/DFE/maxfiles/S_LQCD.max'.
+Wed 20:47: gcc -std=gnu99 -Wall -Werror -fno-guess-branch-probability -frandom-seed=foo -Wno-unused-variable -Wno-unused-function -fPIC -I /network-raid/opt/maxcompiler-2014.2/include/slic -DMAXFILE_INC="/home/skamali/workspace3/DFE_tmLQCD/CPUCode/../RunRules/DFE/maxfiles/S_LQCD.max" -DSLIC_NO_DESTRUCTORS -c /network-raid/opt/maxcompiler-2014.2/src/slicinterface/MaxFileInit.c -o slic_S_LQCD.o 
+Wed 20:47: Copying .max file C object into '/home/skamali/workspace3/DFE_tmLQCD/CPUCode/../RunRules/DFE/objects/maxfiles'
+Wed 20:47: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -c S_LQCDCpuCode.c -o ../RunRules/DFE/objects/c/S_LQCDCpuCode.o
+Wed 20:47: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -c geometry.c -o ../RunRules/DFE/objects/c/geometry.o
+Wed 20:47: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -c hopping.c -o ../RunRules/DFE/objects/c/hopping.o
+Wed 20:48: hopping.c: In function 'Qtm_pm_psi':
+Wed 20:48: hopping.c:37: warning: unused variable 'temp2'
+Wed 20:48: hopping.c:36: warning: unused variable 'temp'
+Wed 20:48: hopping.c:35: warning: unused parameter 'cfactor1'
+Wed 20:48: cc -std=gnu99 -g -O3 -Wall -Wextra -I../RunRules/DFE/include  -I '/network-raid/opt/maxcompiler-2014.2/include/slic'  -o ../RunRules/DFE/binaries/S_LQCD ../RunRules/DFE/objects/maxfiles/slic_S_LQCD.o ../RunRules/DFE/objects/c/S_LQCDCpuCode.o ../RunRules/DFE/objects/c/geometry.o ../RunRules/DFE/objects/c/hopping.o -g -O3  -L '/network-raid/opt/maxcompiler-2014.2/lib' -lslic -L '/network-raid/opt/maxeleros-2014.2/maxeleros/lib' -lmaxeleros -lpthread -lm -lrt 
+Wed 20:48: make[1]: Leaving directory `/home/skamali/workspace3/DFE_tmLQCD/CPUCode'
+Wed 20:48: Build completed: Wed Jun 24 20:48:02 BST 2015
 
 

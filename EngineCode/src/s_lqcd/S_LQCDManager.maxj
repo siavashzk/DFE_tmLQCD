@@ -23,9 +23,12 @@ public class S_LQCDManager extends CustomManager {
 		KernelBlock times1block = addKernel(
 				new S_LQCDKernel(
 						makeKernelParameters(kernel_names[0]),
-						engineParameters.getL(),
 						engineParameters.getT(),
+						engineParameters.getLX(),
+						engineParameters.getLY(),
+						engineParameters.getLZ(),
 						engineParameters.getNumPipes(),
+						engineParameters.getLoopOffset(),
 						S_LQCDKernel.Mode.TIMES,
 						S_LQCDKernel.EO.ODDEVEN,
 						false
@@ -101,38 +104,46 @@ public class S_LQCDManager extends CustomManager {
 			addStreamToCPU(outputName).connect(times1block.getOutput(outputName));
 
 
-		createSLiCinterface( modeDefault(
-		                               engineParameters.getL(),
-		                               engineParameters.getT()
-		                                 ) );
+		createSLiCinterface(
+				modeDefault(
+						engineParameters.getT(),
+						engineParameters.getLX(),
+						engineParameters.getLY(),
+						engineParameters.getLZ(),
+						engineParameters.getLoopOffset()
+						)
+				);
 
 		DebugLevel MyDebugLevel = new DebugLevel();
 		MyDebugLevel.setHasStreamStatus(true);
 		debug.setDebugLevel(MyDebugLevel);
 
 		configBuild(engineParameters );
+
+		addMaxFileConstant("T", engineParameters.getT());
+		addMaxFileConstant("LX", engineParameters.getLX());
+		addMaxFileConstant("LY", engineParameters.getLY());
+		addMaxFileConstant("LZ", engineParameters.getLZ());
 	}
 
 	private static int getVolumeWithHalos (int L, int T, int h) {
 		return (T+2*h) * (L+2*h) * (L+2*h) * (L/2+h);
 	}
 
-	private static EngineInterface modeDefault(int L, int T) {
+	private static EngineInterface modeDefault(int T, int LX, int LY, int LZ, int loopOffset) {
 		EngineInterface engine_interface = new EngineInterface();
 		CPUTypes   type = CPUTypes.FLOAT;
-		int        spinorSize = 4 * 3 * 2 * type.sizeInBytes();
-		int        gaugeSize = 4 * 9 * 2 * type.sizeInBytes();
 
 		InterfaceParam  ka    = engine_interface.addParam("ka", CPUTypes.FLOAT);
 		InterfaceParam  cfactor    = engine_interface.addParam("cfactor", CPUTypes.FLOAT);
 
-		int V  = getVolumeWithHalos(L,T,0);
-		int VH1 = getVolumeWithHalos(L,T,4);
-		int VH2 = getVolumeWithHalos(L,T,3);
-		int VH3 = getVolumeWithHalos(L,T,2);
-		int VH4 = getVolumeWithHalos(L,T,1);
+		int V  = getVolumeWithHalos(LX,T,0);
+		int VH1 = getVolumeWithHalos(LX,T,4);
+		int VH2 = getVolumeWithHalos(LX,T,3);
+		int VH3 = getVolumeWithHalos(LX,T,2);
+		int VH4 = getVolumeWithHalos(LX,T,1);
 
-		engine_interface.setTicks("times1kernel", 8 * VH4);
+		engine_interface.setTicks("times1kernel", 8 * (T+2)*LX*LY*LZ/2 + 8 * loopOffset + 2);
 		//engine_interface.setTicks("sub1kernel", VH2);
 		//engine_interface.setTicks("times2kernel", VH3);
 		//engine_interface.setTicks("sub2kernel", VH4);
@@ -148,13 +159,6 @@ public class S_LQCDManager extends CustomManager {
 				engine_interface.setScalar(kernel_names[i], "cfactor", -cfactor);
 			}
 		}
-
-		engine_interface.setStream("times1kernel_spinor_in",   type,  VH4 * spinorSize);
-		engine_interface.setStream("times1kernel_gauge0",   type, VH4 * gaugeSize);
-		engine_interface.setStream("times1kernel_gauge1",   type, VH4  * gaugeSize);
-
-		//engine_interface.setStream("sub1kernel_spinor_out",   type, VH3 * spinorSize);
-		engine_interface.setStream("times1kernel_spinor_out",   type, V * spinorSize);
 
 		return engine_interface;
 	}

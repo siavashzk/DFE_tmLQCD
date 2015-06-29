@@ -10,6 +10,7 @@ s = k;
 _prefetch_spinor(s);
 _prefetch_su3(U0);
 
+FILE *fptr = fopen ("debug_output.txt","w");
 
    phi = NBPointer[ieo];
    ix=0;
@@ -69,38 +70,38 @@ _prefetch_su3(U0);
 #endif
 
      _hop_t_p_post();
-     //printf("cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
      ix++;
      
      _hop_t_m_post();
-     //printf("cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
      ix++;
      U1++;
      
      _hop_x_p_post();
-     //printf("cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
      ix++;
      
      _hop_x_m_post();
-     //printf("cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
      U1++;
      ix++;
      
      _hop_y_p_post();
-     //printf("cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
      ix++;
      
      _hop_y_m_post();
-     //printf("cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
      U1++;
      ix++;
      
      _hop_z_p_post();
-     //printf("cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(phi[ix]->s0.c0), cimag(phi[ix]->s0.c0) );
      ix++;
      
      _hop_z_m_post();
-     //printf("cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
+     //fprintf(fptr,"cpu %f %f\n", creal(psi.c0), cimag(psi.c0) );
      
 #ifdef _MUL_G5_CMPLX
      _hop_mul_g5_cmplx_and_store(s);
